@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import daos.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -29,18 +30,50 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Login</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        //controlador de funciones de usuario
+        UsuarioDAO usuariosDAO = new UsuarioDAO();
+
+        String username = request.getParameter("inputUsername");
+        String password = request.getParameter("inputPassword");
+        String errorMessage = "Password incorrecta";
+        User usuario = usuariosDAO.getEmpleadoByUsername(username);
+        if ("Login".equals(request.getParameter("Login"))) {
+            if (usuario == null) {
+                errorMessage = "El nombre de usuario no existe en la DB";
+                request.getSession(true).setAttribute("errorMessage", errorMessage);
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+            } else {
+                if (usuario.getPassword().equals(password)) {
+                    errorMessage = "";
+                    request.getSession(true).setAttribute("usuario", usuario);
+                    request.getSession(true).setAttribute("posicionEmpleado", -1);
+                    response.sendRedirect(request.getContextPath() + "/userValidado.jsp");
+                } else {
+                    request.getSession(true).setAttribute("errorMessage", errorMessage);
+                    response.sendRedirect(request.getContextPath() + "/login.jsp");
+                }
+            }
+        }
+        if ("New".equals(request.getParameter("Registrarse"))) {
+            username = request.getParameter("inputUsername");
+            if (ejb.getEmpleadoByUsername(username) == null) {
+                String password = request.getParameter("password");
+                String fullName = request.getParameter("nombrecompleto");
+                String ciudad = request.getParameter("ciudad");
+                String telefono = request.getParameter("telefono");
+
+                entities.Empleado empleado = new entities.Empleado(username, password, fullName, telefono, ciudad);
+                try {
+                    ejb.insertEmpleado(empleado);
+                    request.setAttribute("status", "todo ok");
+                } catch (IncidenciasException ex) {
+                    request.setAttribute("status", ex.getMessage());
+                }
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+            } else {
+                request.setAttribute("status", "Ya existe un usuario con ese username");
+                request.getRequestDispatcher("/nuevoEmpleado.jsp").forward(request, response);
+            }
         }
     }
 
