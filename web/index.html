@@ -18,18 +18,16 @@ PAGINA PRINCIPAL
             <div class="form-sign">
                 <h2 class="form-sign-heading">Inicia sesión</h2>
                 <form action="Login" method="POST">
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
+                    <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Email" required autofocus>
+                    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Contraseña" required>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" value="remember-me"> Recuerdame
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-lg btn-primary btn-block">INICIAR SESIÓN</button>
+                    <input type="submit" name="Login" value="Login" class="btn btn-lg btn-primary btn-block">
                 </form>
                 <a href="./newUser.jsp">¿Eres nuevo aquí?</a><br>
-                <a href="./recoverPassword.jsp">He olvidado mi contraseña</a>
-
             </div> 
         </div>
     </body>

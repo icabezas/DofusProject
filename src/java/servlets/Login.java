@@ -50,7 +50,7 @@ public class Login extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/userValidado.jsp");
                 } else {
                     request.getSession(true).setAttribute("errorMessage", errorMessage);
-                    response.sendRedirect(request.getContextPath() + "/login.jsp");
+                    response.sendRedirect(request.getContextPath() + "/index.html");
                 }
             }
         }
