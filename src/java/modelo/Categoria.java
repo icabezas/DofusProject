@@ -10,10 +10,14 @@ package modelo;
  * @author alu2016164
  */
 public class Categoria {
+
     private String nombre;
 
     public Categoria(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Categoria() {
     }
 
     public String getNombre() {
@@ -23,6 +27,5 @@ public class Categoria {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
 }

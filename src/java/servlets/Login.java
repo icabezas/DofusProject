@@ -6,6 +6,7 @@
 package servlets;
 
 import daos.UsuarioDAO;
+import exceptions.DofusException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -30,51 +31,72 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        String errorMessage = "";
         //controlador de funciones de usuario
         UsuarioDAO usuariosDAO = new UsuarioDAO();
 
         String username = request.getParameter("inputUsername");
-        String password = request.getParameter("inputPassword");
-        String errorMessage = "Password incorrecta";
-        User usuario = usuariosDAO.getEmpleadoByUsername(username);
+        String password1 = request.getParameter("inputPassword");
+        String password2 = request.getParameter("inputRepitPassword");
+        modelo.User user = new modelo.User();
+        try {
+            user = usuariosDAO.getUserByUsername(username);
+        } catch (Exception ex) {
+
+        }
+
+        boolean exist = false;
+        try {
+            exist = usuariosDAO.existsUser(username);
+        } catch (Exception ex) {
+
+        }
+
         if ("Login".equals(request.getParameter("Login"))) {
-            if (usuario == null) {
+            if (!exist) {
                 errorMessage = "El nombre de usuario no existe en la DB";
-                request.getSession(true).setAttribute("errorMessage", errorMessage);
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                request.getSession(true).setAttribute("status", errorMessage);
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
             } else {
-                if (usuario.getPassword().equals(password)) {
+                if (user.getPassword().equals(password1)) {
                     errorMessage = "";
-                    request.getSession(true).setAttribute("usuario", usuario);
-                    request.getSession(true).setAttribute("posicionEmpleado", -1);
-                    response.sendRedirect(request.getContextPath() + "/userValidado.jsp");
+                    request.getSession(true).setAttribute("usuario", user);
+                    response.sendRedirect(request.getContextPath() + "/mainScreen.jsp");
                 } else {
                     request.getSession(true).setAttribute("errorMessage", errorMessage);
-                    response.sendRedirect(request.getContextPath() + "/index.html");
+                    response.sendRedirect(request.getContextPath() + "/index.jsp");
                 }
             }
         }
-        if ("New".equals(request.getParameter("Registrarse"))) {
-            username = request.getParameter("inputUsername");
-            if (ejb.getEmpleadoByUsername(username) == null) {
-                String password = request.getParameter("password");
-                String fullName = request.getParameter("nombrecompleto");
-                String ciudad = request.getParameter("ciudad");
-                String telefono = request.getParameter("telefono");
 
-                entities.Empleado empleado = new entities.Empleado(username, password, fullName, telefono, ciudad);
-                try {
-                    ejb.insertEmpleado(empleado);
-                    request.setAttribute("status", "todo ok");
-                } catch (IncidenciasException ex) {
-                    request.setAttribute("status", ex.getMessage());
+        if ("Registrarse".equals(request.getParameter("Registrarse"))) {
+            username = request.getParameter("inputUsername");
+
+            if (!exist) {
+                if (usuariosDAO.checkPasswords(password1, password2)) {
+                    modelo.User usuario = new modelo.User();
+                    usuario.setNombre(username);
+                    usuario.setPassword(password1);
+                    usuario.setIsadmin(false);
+                    usuario.setLevel(1);
+                    try {
+                        usuariosDAO.newUser(usuario);
+                        request.setAttribute("status", "Usuario registrado correctamente");
+                    } catch (Exception ex) {
+                        request.setAttribute("status", ex.getMessage());
+                    }
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("status", "Las contraseñas no coinciden");
+                    request.getRequestDispatcher("/nuevoUsuario.jsp").forward(request, response);
                 }
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
             } else {
                 request.setAttribute("status", "Ya existe un usuario con ese username");
-                request.getRequestDispatcher("/nuevoEmpleado.jsp").forward(request, response);
+                request.getRequestDispatcher("/nuevoUsuario.jsp").forward(request, response);
             }
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

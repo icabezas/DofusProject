@@ -5,12 +5,14 @@
  */
 package servlets;
 
+import daos.RasgosDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Categoria;
 
 /**
  *
@@ -30,17 +32,20 @@ public class Rasgos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Rasgos</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Rasgos at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        RasgosDAO rasgosDAO = new RasgosDAO();
+        String errorMessage = "";
+        String nombreCategoria = request.getParameter("nombreCategoria");
+        if ("CREAR CATEGORIA".equals(request.getParameter("CREAR CATEGORIA"))) {
+            try {
+                Categoria categoria = new Categoria();
+                categoria.setNombre(nombreCategoria);
+                rasgosDAO.crearCategoria(categoria);
+            } catch (Exception ex) {
+                errorMessage = "Error al crear la categoria";
+            }
+            errorMessage = "Categoria  " + nombreCategoria + " creada con éxito";
+            request.getSession(true).setAttribute("errorMessage", errorMessage);
+            response.sendRedirect(request.getContextPath() + "/crearCategoria.jsp");
         }
     }
 

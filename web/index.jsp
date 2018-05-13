@@ -1,6 +1,6 @@
 <%-- 
-    Document   : nuevoUsuario
-    Created on : 04-may-2018, 20:02:50
+    Document   : index
+    Created on : 13-may-2018, 16:22:26
     Author     : THOR
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Registro</title>
+        <title>LOGIN</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -17,27 +17,28 @@
         <script src="js/bootstrap.js" type="text/javascript"></script>
     </head>
     <body>
-        <button class="btn btn-primary" onclick="location.href='./index.jsp';" >Atrás</button>
+        <%
+            Object errorMessage = request.getAttribute("status");
+            if (errorMessage != null) {
+        %><p style="color:red"><%=errorMessage%></p><%
+            }
+        %>
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
                     <div class="form-sign">
-                        <h2 class="form-sign-heading">Registro</h2>
+                        <h2 class="form-sign-heading">Inicia sesión</h2>
                         <form action="Login" method="POST">
-                            <label for="inputUsername">Username</label>
                             <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Email" required autofocus>
-                            <label for="inputPassword">Contraseña</label>
                             <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Contraseña" required>
-                            <label for="inputRepitPassword">Repite la contraseña</label>
-                            <input type="password" id="inputRepitPassword" name="inputRepitPassword" class="form-control" placeholder="REpite contraseña" required>
-                            <input type="submit" name="Registrarse" value="Registrarse" class="btn btn-lg btn-primary btn-block">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="remember-me"> Recuerdame
+                                </label>
+                            </div>
+                            <input type="submit" name="Login" value="Login" class="btn btn-lg btn-primary btn-block">
                         </form>
-                        <%
-                            Object errorMessage = request.getAttribute("status");
-                            if (errorMessage != null) {
-                        %><p style="color:red"><%=errorMessage%></p><%
-                            }
-                        %>
+                        <a href="./nuevoUsuario.jsp">¿Eres nuevo aquí?</a><br>
                     </div> 
                 </div>
             </div>

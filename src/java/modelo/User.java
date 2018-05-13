@@ -21,6 +21,9 @@ public class User {
         this.level = level;
         this.isadmin = false;
     }
+    public User(){
+        
+    }
 
     
     
