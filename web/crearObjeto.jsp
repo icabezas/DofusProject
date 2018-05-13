@@ -4,6 +4,7 @@
     Author     : THOR
 --%>
 
+<%@page import="modelo.Caracteristica"%>
 <%@page import="modelo.Categoria"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,10 +21,11 @@
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <%
+            daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
             Object errorMessage = request.getAttribute("status");
             if (errorMessage != null) {
         %><p style="color:red"><%=errorMessage%></p><%
-           }
+            }
         %>
         <div class="container">
             <div class="row">
@@ -45,8 +47,6 @@
                             <label for="categoria">Categoria</label>
 
                             <%
-                                daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
-
                                 List<modelo.Categoria> categorias = (List<modelo.Categoria>) rasgosDAO.getListAllCategorias();
 
                                 if (categorias.isEmpty()) {
@@ -67,8 +67,33 @@
                                 %>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="caracteristicas">Caracteristicas</label>
+
+                            <%
+
+                                List<modelo.Caracteristica> caracteristicas = (List<modelo.Caracteristica>) rasgosDAO.getListAllCaracteristicas();
+
+                                if (caracteristicas.isEmpty()) {
+                            %>
+                            <p> NO HAY CARACTERISTICAS </p>
+                            <%
+                            } else {
+                            %>
+
+                            <select class="form-control" id="caracteristica" name="caracteristicaObjeto">
+                                <%
+                                    for (Caracteristica caracteristica : caracteristicas) {
+                                        String nombre = caracteristica.getNombre();
+                                %>
+                                <option value="<%= nombre%>"><%= nombre%></option> 
+                                <% }
+                                    }
+                                %>
+                            </select>
+                        </div>
                         <%
-                            if (categorias.isEmpty()) {
+                            if (categorias.isEmpty() || caracteristicas.isEmpty()) {
                         %>
                         <button disabled type="submit" class="btn btn-primary" name="CREAR OBJETO" value="CREAR OBJETO">CREAR OBJETO</button>
 

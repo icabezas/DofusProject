@@ -9,7 +9,6 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -27,7 +26,7 @@
         <h1>ADMINISTRACION</h1>
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <h3>USUARIO</h3>
                     <form action="eliminarUsuario.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="ELIMINAR USUARIO">ELIMINAR USUARIO</button>
@@ -44,6 +43,16 @@
                         <button class="btn btn-primary" type="submit" value="CREAR OBJETO">CREAR OBJETOS</button>
                     </form>
                     <hr>
+                    <h3>CARACTERISTICAS</h3>
+                    <form action="eliminarCaracteristica.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="ELIMINAR CARACTERISTICA">ELIMINAR CARACTERISTICA</button>
+                    </form>
+                    <form action="crearCaracteristica.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="CREAR CARACTERISTICA">CREAR CARACTERISTICA</button>
+                    </form>
+
+                </div>
+                <div class="col-lg-6">
                     <h3>CATEGORIA</h3>
                     <form action="eliminarCategoria.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="ELIMINAR CATEGORIA">ELIMINAR CATEGORIA</button>
@@ -51,8 +60,16 @@
                     <form action="crearCategoria.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="CREAR CATEGORIA">CREAR CATEGORIA</button>
                     </form>
+                    <h3>RAZA</h3>
+                    <form action="eliminarRaza.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="ELIMINAR RAZA">ELIMINAR RAZA</button>
+                    </form>
+                    <form action="crearRaza.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="CREAR RAZA">CREAR RAZA</button>
+                    </form>
                 </div>
             </div>
+
             <%} else {%>
 
             <%}

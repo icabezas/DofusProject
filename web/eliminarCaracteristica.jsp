@@ -1,14 +1,12 @@
 <%-- 
-    Document   : eliminarObjeto
-    Created on : 13-may-2018, 18:00:13
+    Document   : eliminarCaracteristica
+    Created on : 13-may-2018, 21:35:20
     Author     : THOR
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="modelo.Objeto"%>
 <%@page import="java.util.List"%>
-
-
+<%@page import="modelo.Caracteristica"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,39 +20,39 @@
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
-            <h1>Elminar objeto</h1>
+            <h1>Elminar caracteristicas</h1>
             <%
                 Object errorMessage = request.getAttribute("errorMessage");
                 if (errorMessage != null) {
             %><p><%=errorMessage%></p><%
                 }
             %>
-            <p>Listado de objetos</p>
+            <p>Listado de caracteristicas</p>
             <%
-                daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
+                daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
 
-                List<modelo.Objeto> objetos = (List<modelo.Objeto>) objetoDAO.getListAllObjetos();
+                List<modelo.Caracteristica> caracteristicas = (List<modelo.Caracteristica>) rasgosDAO.getListAllCaracteristicas();
 
-                if (objetos.isEmpty()) {
+                if (caracteristicas.isEmpty()) {
             %>
-            <p> NO HAY OBJETOS </p>
+            <p> NO HAY CARACTERISTICAS </p>
             <%
             } else {
             %>
             <div class="row">
                 <div class="col-lg-3">
-                    <form action="Objeto" method="POST">
+                    <form action="Rasgos" method="POST">
 
-                        <select class="form-control" name="objetoBorrar">
+                        <select class="form-control" name="nombreCaracteristica">
                             <%
-                                for (Objeto objt : objetos) {
-                                    String nombre = objt.getNombre();
+                                for (Caracteristica catg : caracteristicas) {
+                                    String nombre = catg.getNombre();
                             %>
                             <option value="<%= nombre%>"><%= nombre%></option> 
                             <% }
                             %>
                         </select>
-                        <button class="btn btn-primary" type="submit" value="ELIMINAR OBJETO" name="ELIMINAR OBJETO">ELIMINAR OBJETO</button>
+                        <button class="btn btn-primary" type="submit" value="ELIMINAR CARACTERISTICA" name="ELIMINAR CARACTERISTICA">ELIMINAR CARACTERISTICA</button>
                     </form>
                     <%
                         }

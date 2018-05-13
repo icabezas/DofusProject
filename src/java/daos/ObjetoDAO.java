@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Caracteristica;
 import modelo.Categoria;
 import modelo.Objeto;
 
@@ -25,11 +26,14 @@ public class ObjetoDAO {
     Connection conexion;
     RasgosDAO rasgosDAO = new RasgosDAO();
 
-    public void eliminarObjeto(String objeto) throws SQLException {
+    //TO-DO COMPROBAR SI EL OBJETO LO TIENE ALGUN PERSONAJE, SI ES ASÍ, BORRARSELO AL PERSONAJE
+    public void eliminarObjeto(Objeto objeto) throws SQLException {
         conectar();
-        String delete = "delete from objeto where nombre = '" + objeto + "'";
+        String delete = "delete from objeto where nombre = '" + objeto.getNombre() + "'";
+        String delete2 = "delete from caracteristicaobjeto where idObjeto = " + objeto.getIdobjeto();
         Statement st = conexion.createStatement();
         st.executeUpdate(delete);
+        st.executeUpdate(delete2);
         st.close();
         desconectar();
     }
@@ -43,6 +47,17 @@ public class ObjetoDAO {
         ps.setInt(3, obj.getNivel());
         ps.setString(4, obj.getDescripcion());
         ps.setString(5, obj.getCategoria().getNombre());
+        ps.executeUpdate();
+        ps.close();
+        desconectar();
+    }
+    
+    public void crearObjetoCaracteristica( Caracteristica caracteristica) throws SQLException{
+        conectar();
+        String insert = "insert into caracteristicaobjeto values (?,?)";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setInt(1, caracteristica.getIdCaracteristica());
+        ps.setInt(2, getLastID()-1);
         ps.executeUpdate();
         ps.close();
         desconectar();
@@ -62,7 +77,7 @@ public class ObjetoDAO {
             objeto.setCategoria(categoria);
             objeto.setDescripcion(rs.getString("descripcion"));
             objeto.setNivel(rs.getInt("nivel"));
-        }else{
+        } else {
             objeto = null;
         }
         rs.close();

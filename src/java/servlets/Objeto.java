@@ -22,37 +22,44 @@ public class Objeto extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String objtName = request.getParameter("objetoBorrar");
+        String caracteristicaName = request.getParameter("caracteristicaObjeto");
         daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
+        daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
         String errorMessage = "";
+        modelo.Objeto objeto = null;
         if ("ELIMINAR OBJETO".equals(request.getParameter("ELIMINAR OBJETO"))) {
             try {
-                objetoDAO.eliminarObjeto(objtName);
+                objeto = objetoDAO.getObjetoByNombre(objtName);
+                objetoDAO.eliminarObjeto(objeto);
             } catch (Exception ex) {
                 errorMessage = "Error al eliminar el usuario";
             }
             errorMessage = "Objeto " + objtName + " eliminado con éxito";
-            request.getSession(true).setAttribute("errorMessage", errorMessage);
+            request.setAttribute("errorMessage", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarObjeto.jsp");
         }
         if ("CREAR OBJETO".equals(request.getParameter("CREAR OBJETO"))) {
             String nombreObjeto = request.getParameter("nombreObjeto");
-            modelo.Objeto objeto = null;
+            modelo.Caracteristica caracteristica = null;
             try {
                 objeto = objetoDAO.getObjetoByNombre(nombreObjeto);
+                caracteristica = rasgosDAO.getCaracteristicaByName(caracteristicaName);
                 if (objeto == null) {
                     try {
                         String descripcion = request.getParameter("descripcion");
                         int nivel = Integer.parseInt(request.getParameter("nivel"));
                         String categoria = request.getParameter("categoria");
-                        RasgosDAO rasgosDAO = new RasgosDAO();
                         modelo.Categoria categoriaObjeto = rasgosDAO.getCategoriaByName(categoria);
                         objeto = new modelo.Objeto();
                         objeto.setNombre(nombreObjeto);
                         objeto.setDescripcion(descripcion);
                         objeto.setNivel(nivel);
                         objeto.setCategoria(categoriaObjeto);
+                        
                         objetoDAO.crearObjeto(objeto);
+                        objetoDAO.crearObjetoCaracteristica(caracteristica);
                     } catch (Exception ex) {
+                        System.out.println("ERRORRR" + ex.getMessage());
                         errorMessage = "Error al crear el objeto";
                     }
                     errorMessage = "Objeto  " + nombreObjeto + " creado con éxito";
@@ -60,7 +67,7 @@ public class Objeto extends HttpServlet {
             } catch (Exception ex) {
             }
 
-            request.getSession(true).setAttribute("errorMessage", errorMessage);
+            request.setAttribute("errorMessage", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearObjeto.jsp");
         }
     }

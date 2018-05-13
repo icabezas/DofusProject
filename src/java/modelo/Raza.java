@@ -12,6 +12,8 @@ package modelo;
 public class Raza {
     private String nombre;
 
+    public Raza(){}
+    
     public Raza(String nombre) {
         this.nombre = nombre;
     }

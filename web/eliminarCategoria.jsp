@@ -1,14 +1,12 @@
 <%-- 
-    Document   : eliminarObjeto
-    Created on : 13-may-2018, 18:00:13
+    Document   : eliminarCategoria
+    Created on : 13-may-2018, 21:01:04
     Author     : THOR
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="modelo.Objeto"%>
+<%@page import="modelo.Categoria"%>
 <%@page import="java.util.List"%>
-
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,39 +20,39 @@
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
-            <h1>Elminar objeto</h1>
+            <h1>Elminar categoria</h1>
             <%
-                Object errorMessage = request.getAttribute("errorMessage");
+                Object errorMessage = request.getAttribute("status");
                 if (errorMessage != null) {
-            %><p><%=errorMessage%></p><%
-                }
+            %><p style="color:red"><%=errorMessage%></p><%
+                            }
             %>
-            <p>Listado de objetos</p>
+            <p>Listado de categorias</p>
             <%
-                daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
+                daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
 
-                List<modelo.Objeto> objetos = (List<modelo.Objeto>) objetoDAO.getListAllObjetos();
+                List<modelo.Categoria> categorias = (List<modelo.Categoria>) rasgosDAO.getListAllCategorias();
 
-                if (objetos.isEmpty()) {
+                if (categorias.isEmpty()) {
             %>
-            <p> NO HAY OBJETOS </p>
+            <p> NO HAY CATEGORIAS </p>
             <%
             } else {
             %>
             <div class="row">
                 <div class="col-lg-3">
-                    <form action="Objeto" method="POST">
+                    <form action="Rasgos" method="POST">
 
-                        <select class="form-control" name="objetoBorrar">
+                        <select class="form-control" name="nombreCategoria">
                             <%
-                                for (Objeto objt : objetos) {
-                                    String nombre = objt.getNombre();
+                                for (Categoria catg : categorias) {
+                                    String nombre = catg.getNombre();
                             %>
                             <option value="<%= nombre%>"><%= nombre%></option> 
                             <% }
                             %>
                         </select>
-                        <button class="btn btn-primary" type="submit" value="ELIMINAR OBJETO" name="ELIMINAR OBJETO">ELIMINAR OBJETO</button>
+                        <button class="btn btn-primary" type="submit" value="ELIMINAR CATEGORIA" name="ELIMINAR CATEGORIA">ELIMINAR CATEGORIA</button>
                     </form>
                     <%
                         }

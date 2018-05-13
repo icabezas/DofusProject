@@ -12,6 +12,9 @@ package modelo;
 public class Tipo {
     private String nombre;
 
+    public Tipo() {
+    }
+    
     public Tipo(String nombre) {
         this.nombre = nombre;
     }
@@ -23,6 +26,4 @@ public class Tipo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
 }

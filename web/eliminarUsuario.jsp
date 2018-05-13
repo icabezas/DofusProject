@@ -14,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <button class="btn btn-primary" onclick="location.href='./index.jsp';" >Atrás</button>
+        <button class="btn btn-primary" onclick="location.href='./mainScreen.jsp';" >Atrás</button>
         <h1>Elminar usuario</h1>
         <%
             Object errorMessage = request.getAttribute("errorMessage");

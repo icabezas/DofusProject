@@ -20,15 +20,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Login extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -45,14 +36,12 @@ public class Login extends HttpServlet {
         } catch (Exception ex) {
 
         }
-
         boolean exist = false;
         try {
             exist = usuariosDAO.existsUser(username);
         } catch (Exception ex) {
 
         }
-
         if ("Login".equals(request.getParameter("Login"))) {
             if (!exist) {
                 errorMessage = "El nombre de usuario no existe en la DB";
@@ -64,7 +53,7 @@ public class Login extends HttpServlet {
                     request.getSession(true).setAttribute("usuario", user);
                     response.sendRedirect(request.getContextPath() + "/mainScreen.jsp");
                 } else {
-                    request.getSession(true).setAttribute("errorMessage", errorMessage);
+                    request.setAttribute("status", "Usuario registrado correctamente");
                     response.sendRedirect(request.getContextPath() + "/index.jsp");
                 }
             }

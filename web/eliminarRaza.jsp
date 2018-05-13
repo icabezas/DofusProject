@@ -1,14 +1,12 @@
 <%-- 
-    Document   : eliminarObjeto
-    Created on : 13-may-2018, 18:00:13
+    Document   : eliminarRaza
+    Created on : 13-may-2018, 21:14:14
     Author     : THOR
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="modelo.Objeto"%>
+<%@page import="modelo.Raza"%>
 <%@page import="java.util.List"%>
-
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,44 +15,43 @@
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <script src="js/bootstrap.js" type="text/javascript"></script>
-    </head>
+        <script src="js/bootstrap.js" type="text/javascript"></script>    </head>
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
-            <h1>Elminar objeto</h1>
+            <h1>Elminar raza</h1>
             <%
                 Object errorMessage = request.getAttribute("errorMessage");
                 if (errorMessage != null) {
             %><p><%=errorMessage%></p><%
                 }
             %>
-            <p>Listado de objetos</p>
+            <p>Listado de razas</p>
             <%
-                daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
+                daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
 
-                List<modelo.Objeto> objetos = (List<modelo.Objeto>) objetoDAO.getListAllObjetos();
+                List<modelo.Raza> razas = (List<modelo.Raza>) rasgosDAO.getListAllRazas();
 
-                if (objetos.isEmpty()) {
+                if (razas.isEmpty()) {
             %>
-            <p> NO HAY OBJETOS </p>
+            <p> NO HAY RAZAS </p>
             <%
             } else {
             %>
             <div class="row">
                 <div class="col-lg-3">
-                    <form action="Objeto" method="POST">
+                    <form action="Rasgos" method="POST">
 
-                        <select class="form-control" name="objetoBorrar">
+                        <select class="form-control" name="nombreRaza">
                             <%
-                                for (Objeto objt : objetos) {
-                                    String nombre = objt.getNombre();
+                                for (Raza raza : razas) {
+                                    String nombre = raza.getNombre();
                             %>
                             <option value="<%= nombre%>"><%= nombre%></option> 
                             <% }
                             %>
                         </select>
-                        <button class="btn btn-primary" type="submit" value="ELIMINAR OBJETO" name="ELIMINAR OBJETO">ELIMINAR OBJETO</button>
+                        <button class="btn btn-primary" type="submit" value="ELIMINAR RAZA" name="ELIMINAR RAZA">ELIMINAR RAZA</button>
                     </form>
                     <%
                         }
