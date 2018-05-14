@@ -72,6 +72,7 @@ public class PersonajeDAO extends DbDAO {
         desconectar();
         return personaje;
     }
+    
 
     public List<Personaje> getListAllPersonajes() throws SQLException {
         conectar();
@@ -97,7 +98,52 @@ public class PersonajeDAO extends DbDAO {
 
     public List<Personaje> getListAllPersonajesPorUsuario(User user) throws SQLException {
         conectar();
-        String query = "select * from personaje";
+        String query = "select * from personaje where usuario = '" + user.getNombre() + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<Personaje> personajes = new ArrayList<>();
+        while (rs.next()) {
+            Personaje pers = new Personaje();
+            pers.setIdpersonaje(rs.getInt("idPersonaje"));
+            pers.setNombre(rs.getString("nombre"));
+            pers.setNivel(rs.getInt("nivel"));
+            pers.setRaza(rasgosDAO.getRazaByName(rs.getString("raza")));
+            pers.setTipo(rasgosDAO.getTipoByName(rs.getString("tipo")));
+            pers.setUser(usuarioDAO.getUserByUsername(rs.getString("usuario")));
+            personajes.add(pers);
+        }
+        rs.close();
+        st.close();
+        desconectar();
+        return personajes;
+    }
+    
+    //RANKING PERSONAJES POR USUARIO
+    public List<Personaje> rankingPersonajesNivelPorUsuario(User user) throws SQLException{
+        conectar();
+        String query = "select * from personaje where usuario = '" + user.getNombre() + "' order by nivel desc";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<Personaje> personajes = new ArrayList<>();
+        while (rs.next()) {
+            Personaje pers = new Personaje();
+            pers.setIdpersonaje(rs.getInt("idPersonaje"));
+            pers.setNombre(rs.getString("nombre"));
+            pers.setNivel(rs.getInt("nivel"));
+            pers.setRaza(rasgosDAO.getRazaByName(rs.getString("raza")));
+            pers.setTipo(rasgosDAO.getTipoByName(rs.getString("tipo")));
+            pers.setUser(usuarioDAO.getUserByUsername(rs.getString("usuario")));
+            personajes.add(pers);
+        }
+        rs.close();
+        st.close();
+        desconectar();
+        return personajes;
+    }
+    //RANKING PERSONAJES
+    public List<Personaje> rankingPersonajesNivel() throws SQLException{
+        conectar();
+        String query = "select * from personaje order by nivel desc";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(query);
         List<Personaje> personajes = new ArrayList<>();

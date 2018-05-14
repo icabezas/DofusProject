@@ -4,6 +4,9 @@
     Author     : THOR
 --%>
 
+<%@page import="modelo.User"%>
+<%@page import="java.util.List"%>
+<%@page import="daos.UsuarioDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,7 +19,10 @@
         <script src="js/bootstrap.js" type="text/javascript"></script>
     </head>
     <body>
+        <button class="btn btn-primary" onclick="location.href = './index.jsp';" >DESCONECTAR</button>
+
         <%
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             modelo.User user = (modelo.User) session.getAttribute("usuario");
         %>
         <p>Bienvenid@ <%=user.getNombre()%></p>
@@ -28,12 +34,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <h3>USUARIO</h3>
-                    <form action="eliminarUsuario.jsp" method="POST">
+                    <form action="/eliminar/eliminarUsuario.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="ELIMINAR USUARIO">ELIMINAR USUARIO</button>
                     </form>
                     <form action="mostrarUsuarios.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="MOSTRAR USUARIOS">MOSTRAR USUARIOS</button>
                     </form>
+                    <a href="ranking/rankingPersonajesPorUsuario.jsp"></a>
+                    <a href="mainScreen.jsp"></a>
                     <hr>
                     <h3>OBJETOS</h3>
                     <form action="eliminarObjeto.jsp" method="POST">
@@ -59,7 +67,43 @@
                     <form action="mostrarCaracteristicas.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="MOSTRAR CARACTERISTICAS">MOSTRAR CARACTERISTICASAD </button>
                     </form>
+                    <hr>
+                    <h3>PERSONAJES</h3>
+                    <div class="row">
 
+                        <form action="eliminarPersonajes.jsp" method="POST">
+                            <button class="btn btn-primary" type="submit" value="ELIMINAR PERSONAJES">ELIMINAR PERSONAJES</button>
+                        </form>
+                        <form action="mostrarPersonajes.jsp" method="POST">
+                            <div class="form-group">
+                                <div class="col-lg-3">
+
+                                    <label for="usuarioPersonajes">Usuarios</label>
+
+                                    <%
+                                        List<modelo.User> usuarios = (List<modelo.User>) usuarioDAO.getListUsersNoAdmin();
+                                        if (usuarios.isEmpty()) {
+                                    %>
+                                    <p> NO HAY USUARIOS </p>
+                                    <%
+                                    } else {
+                                    %>
+
+                                    <select class="form-control" id="usuarioPersonajes" name="usuarioPersonajes">
+                                        <%
+                                            for (User us : usuarios) {
+                                                String nombre = us.getNombre();
+                                        %>
+                                        <option value="<%= nombre%>"><%= nombre%></option> 
+                                        <% }
+                                            }
+                                        %>
+                                    </select>
+                                    <button class="btn btn-primary" type="submit" value="VER PERSONAJES">VER PERSONAJES</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="col-lg-6">
                     <h3>CATEGORIA</h3>
@@ -91,6 +135,14 @@
                     <form action="mostrarTipos.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="MOSTRAR TIPOS">MOSTRAR TIPOS</button>
                     </form>
+                    <hr>
+                    <h3>RANKING</h3>
+                    <form action="mostrarRankingUsuariosNivel.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="MOSTRAR RANKING USUARIOS">RANKING USUARIOS</button>
+                    </form>
+                    <form action="mostrarRankingPersonajesNivel.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="MOSTRAR RANKING PERSONAJES">RANKING TODOS PERSONAJES</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -109,6 +161,9 @@
                     <hr>
                     <form action="modificarPersonaje.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="MODIFICAR PERSONAJE">MODIFICAR PERSONAJE</button>
+                    </form>
+                    <form action="mostrarPersonajes.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="MOSTRAR PERSONAJES">MOSTRAR PERSONAJES</button>
                     </form>
 
                 </div>

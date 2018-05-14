@@ -20,7 +20,7 @@ import modelo.User;
  *
  * @author THOR
  */
-public class UsuarioDAO extends DbDAO{
+public class UsuarioDAO extends DbDAO {
 
     Connection conexion;
 
@@ -57,7 +57,7 @@ public class UsuarioDAO extends DbDAO{
         desconectar();
         return usuarios;
     }
-    
+
     public List<User> getListUsers() throws SQLException {
         conectar();
         String query = "select * from usuario";
@@ -77,15 +77,36 @@ public class UsuarioDAO extends DbDAO{
         desconectar();
         return usuarios;
     }
-    
+
     //ELIMINAR USUARIO
-    public void eliminarUsuario(String userName) throws SQLException{
+    public void eliminarUsuario(String userName) throws SQLException {
         conectar();
         String delete = "delete from usuario where nombre = '" + userName + "'";
         Statement st = conexion.createStatement();
         st.executeUpdate(delete);
         st.close();
         desconectar();
+    }
+
+    //USUARIOS DE NIVEL MAYOR A MENOR
+    public List<User> rankingUsuariosMejorNivel() throws SQLException {
+        conectar();
+        String query = "select * from usuario order by usuario.nivel desc";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<User> usuarios = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User();
+            user.setNombre(rs.getString("nombre"));
+            user.setPassword(rs.getString("passwd"));
+            user.setLevel(rs.getInt("nivel"));
+            user.setIsadmin(rs.getBoolean("isAdmin"));
+            usuarios.add(user);
+        }
+        rs.close();
+        st.close();
+        desconectar();
+        return usuarios;
     }
 
     //FUNCION AUXILIAR
@@ -123,9 +144,8 @@ public class UsuarioDAO extends DbDAO{
         desconectar();
         return exists;
     }
-    
-    //
 
+    //
     //CHECK PASSWORDS
     public boolean checkPasswords(String psw1, String psw2) {
         if (psw1.equals(psw2)) {
@@ -134,9 +154,8 @@ public class UsuarioDAO extends DbDAO{
             return false;
         }
     }
-    
-    // ********************* Conectar / Desconectar ****************************//
 
+    // ********************* Conectar / Desconectar ****************************//
     public void conectar() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/dofus";
         String user = "root";

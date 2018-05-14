@@ -33,7 +33,7 @@
                             <input type="submit" name="Registrarse" value="Registrarse" class="btn btn-lg btn-primary btn-block">
                         </form>
                         <%
-                            Object errorMessage = request.getAttribute("status");
+                Object errorMessage = session.getAttribute("status");
                             if (errorMessage != null) {
                         %><p style="color:red"><%=errorMessage%></p><%
                             }

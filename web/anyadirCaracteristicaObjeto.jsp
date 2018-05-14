@@ -1,9 +1,3 @@
-<%-- 
-    Document   : anyadirCaracteristicaObjeto
-    Created on : 13-may-2018, 23:38:46
-    Author     : THOR
---%>
-
 <%@page import="modelo.Caracteristica"%>
 <%@page import="modelo.Objeto"%>
 <%@page import="java.util.List"%>
@@ -12,18 +6,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>MAS CARACTERISTICAS</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <script src="js/bootstrap.js" type="text/javascript"></script>    </head>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+    </head>
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <%
-            daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
-            daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
-            Object errorMessage = request.getAttribute("status");
-            if (errorMessage != null) {
+            modelo.User user = (modelo.User) session.getAttribute("usuario");
+            if (user.isIsadmin()) {
+                daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
+                daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
+                Object errorMessage = session.getAttribute("status");
+                if (errorMessage != null) {
         %><p style="color:red"><%=errorMessage%></p><%
             }
         %>
@@ -88,8 +86,10 @@
                         } else {
                         %>
                         <button type="submit" class="btn btn-primary" name="ANYADIR CARACTERISTICA" value="ANYADIR CARACTERISTICA">ANYADIR CARACTERISTICA</button>
-                        <%
-                            }
+                        <% }
+                        } else {%>
+                        <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
+                        <%}
                         %>
                     </form>
                 </div>

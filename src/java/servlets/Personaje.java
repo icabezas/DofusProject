@@ -28,14 +28,15 @@ public class Personaje extends HttpServlet {
         PersonajeDAO personajeDAO = new PersonajeDAO();
         RasgosDAO rasgosDAO = new RasgosDAO();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        String errorMessage = "";
+        String errorMessage = "Personaje creado correctamente";
         if ("CREAR PERSONAJE".equals(request.getParameter("CREAR PERSONAJE"))) {
             try {
                 String nombre = request.getParameter("nombrePersonaje");
                 Raza raza  = rasgosDAO.getRazaByName(request.getParameter("razaPersonaje"));
                 Tipo tipo  = rasgosDAO.getTipoByName(request.getParameter("tipoPersonaje"));
-                User user =  (User)request.getSession(true).getAttribute("usuario");
+                modelo.User user =  usuarioDAO.getUserByUsername(request.getParameter("usuario"));
                 modelo.Personaje personaje = new modelo.Personaje();
+                personaje.setUser(user);
                 personaje.setNombre(nombre);
                 personaje.setNivel(1);
                 personaje.setRaza(raza);
@@ -44,12 +45,10 @@ public class Personaje extends HttpServlet {
             } catch (Exception ex) {
                 errorMessage = "Error al crear el personaje";
             }
-            request.getSession(true).setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearPersonaje.jsp");
         }
-        if ("MOSTRAR PERSONAJES".equals(request.getParameter("MOSTRAR PERSONAJES"))) {
-            
-        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

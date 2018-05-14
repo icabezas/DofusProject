@@ -53,7 +53,7 @@ public class Login extends HttpServlet {
                     request.getSession(true).setAttribute("usuario", user);
                     response.sendRedirect(request.getContextPath() + "/mainScreen.jsp");
                 } else {
-                    request.setAttribute("status", "Usuario registrado correctamente");
+                    request.getSession(true).setAttribute("status", "Usuario registrado correctamente");
                     response.sendRedirect(request.getContextPath() + "/index.jsp");
                 }
             }
@@ -71,17 +71,17 @@ public class Login extends HttpServlet {
                     usuario.setLevel(1);
                     try {
                         usuariosDAO.newUser(usuario);
-                        request.setAttribute("status", "Usuario registrado correctamente");
+                        request.getSession(true).setAttribute("status", "Usuario registrado correctamente");
                     } catch (Exception ex) {
-                        request.setAttribute("status", ex.getMessage());
+                        request.getSession(true).setAttribute("status", ex.getMessage());
                     }
                     request.getRequestDispatcher("/index.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("status", "Las contraseñas no coinciden");
+                    request.getSession(true).setAttribute("status", "Las contraseñas no coinciden");
                     request.getRequestDispatcher("/nuevoUsuario.jsp").forward(request, response);
                 }
             } else {
-                request.setAttribute("status", "Ya existe un usuario con ese username");
+                request.getSession(true).setAttribute("status", "Ya existe un usuario con ese username");
                 request.getRequestDispatcher("/nuevoUsuario.jsp").forward(request, response);
             }
         }

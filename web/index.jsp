@@ -18,7 +18,7 @@
     </head>
     <body>
         <%
-            Object errorMessage = request.getAttribute("status");
+                Object errorMessage = session.getAttribute("status");
             if (errorMessage != null) {
         %><p style="color:red"><%=errorMessage%></p><%
             }
@@ -38,7 +38,7 @@
                             </div>
                             <input type="submit" name="Login" value="Login" class="btn btn-lg btn-primary btn-block">
                         </form>
-                        <a href="./nuevoUsuario.jsp">¿Eres nuevo aquí?</a><br>
+                        <a href="./crear/nuevoUsuario.jsp">¿Eres nuevo aquí?</a><br>
                     </div> 
                 </div>
             </div>

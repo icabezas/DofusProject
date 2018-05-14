@@ -1,9 +1,4 @@
-<%-- 
-    Document   : makeAdmin
-    Created on : 13-may-2018, 17:55:51
-    Author     : THOR
---%>
-
+<%@page import="modelo.Personaje"%>
 <%@page import="modelo.User"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,32 +6,32 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>USUARIOS</title>
+        <title>RANKING PERSONAJES</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="js/bootstrap.js" type="text/javascript"></script>
     </head>
+    <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
             <%
                 modelo.User user = (modelo.User) session.getAttribute("usuario");
-                if (user.isIsadmin()) {
 
                 Object errorMessage = session.getAttribute("status");
                     if (errorMessage != null) {
             %><p><%=errorMessage%></p>
-            <h1>LISTADO USUARIOS</h1>
+            <h1>RANKING PERSONAJES</h1>
             <%
                 }
-                daos.UsuarioDAO usuarioDAO = new daos.UsuarioDAO();
+                daos.PersonajeDAO personajeDAO = new daos.PersonajeDAO();
 
-                List<modelo.User> usuarios = (List<modelo.User>) usuarioDAO.getListUsers();
+                List<modelo.Personaje> personajes = (List<modelo.Personaje>) personajeDAO.rankingPersonajesNivel();
 
-                if (usuarios.isEmpty()) {
+                if (personajes.isEmpty()) {
             %>
-            <p> NO HAY USUARIOS </p>
+            <p> NO HAY PERSONAJES </p>
             <%
             } else {
             %>
@@ -46,23 +41,44 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>NOMBRE</th>
                                 <th>NIVEL</th>
-                                <th>ADMINISTRADOR</th>
+                                <th>RAZA</th>
+                                <th>TIPO</th>
+                                    <%
+                                        if (user.isIsadmin()) {
+                                    %>
+                                <th>USUARIO</th>
+                                    <%
+                                        }
+                                    %>
                             </tr>
                         </thead>
                         <tbody>
 
                             <%
-                                for (User usuario : usuarios) {
-                                    String nombre = usuario.getNombre();
-                                    int nivel = usuario.getLevel();
-                                    boolean isAdmin = usuario.isIsadmin();
+                                for (Personaje personaje : personajes) {
+                                    int id = personaje.getIdpersonaje();
+                                    String nombre = personaje.getNombre();
+                                    int nivel = personaje.getNivel();
+                                    String raza = personaje.getRaza().getNombre();
+                                    String tipo = personaje.getTipo().getNombre();
+                                    String usuario = personaje.getUser().getNombre();
                             %>
                             <tr>
+                                <td><%=id%></td>
                                 <td><%=nombre%></td>
                                 <td><%=nivel%></td>
-                                <td><%=isAdmin%></td>
+                                <td><%=raza%></td>
+                                <td><%=tipo%></td>
+                                <%
+                                    if (user.isIsadmin()) {
+                                %>
+                                <td><%=usuario%></td>
+                                <%
+                                    }
+                                %>
                             </tr>
                             <%
                                 }
@@ -74,9 +90,6 @@
         </div>
 
         <% }
-        } else {%>
-        <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
-        <%}
         %>
     </body>
 </html>

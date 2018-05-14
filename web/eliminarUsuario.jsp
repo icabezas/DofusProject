@@ -11,23 +11,30 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>ELIMINAR USUARIO</title>
+        <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
     </head>
     <body>
-        <button class="btn btn-primary" onclick="location.href='./mainScreen.jsp';" >Atrás</button>
+        <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <h1>Elminar usuario</h1>
         <%
-            Object errorMessage = request.getAttribute("errorMessage");
-            if (errorMessage != null) {
+            modelo.User user = (modelo.User) session.getAttribute("usuario");
+            if (user.isIsadmin()) {
+                Object errorMessage = session.getAttribute("status");
+                if (errorMessage != null) {
         %><p><%=errorMessage%></p><%
             }
         %>
         <p>Listado de usuarios</p>
         <%
             daos.UsuarioDAO usuarioDAO = new daos.UsuarioDAO();
-            
+
             List<modelo.User> usuarios = (List<modelo.User>) usuarioDAO.getListUsersNoAdmin();
-            
+
             if (usuarios.isEmpty()) {
         %>
         <p> NO HAY USUARIOS </p>
@@ -47,8 +54,10 @@
             </select>
             <input type="submit" value="ELIMINAR USUARIO" name="ELIMINAR USUARIO">
         </form>
-        <%
-            }
+        <% }
+        } else {%>
+        <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
+        <%}
         %>
     </body>
 </html>

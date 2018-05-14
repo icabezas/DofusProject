@@ -1,8 +1,3 @@
-<%-- 
-    Document   : crearObjeto
-    Created on : 13-may-2018, 17:59:27
-    Author     : THOR
---%>
 
 <%@page import="modelo.Caracteristica"%>
 <%@page import="modelo.Categoria"%>
@@ -12,6 +7,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>CREAR OBJETO</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -21,9 +17,11 @@
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <%
-            daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
-            Object errorMessage = request.getAttribute("status");
-            if (errorMessage != null) {
+            modelo.User user = (modelo.User) session.getAttribute("usuario");
+            if (user.isIsadmin()) {
+                daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
+                Object errorMessage = session.getAttribute("status");
+                if (errorMessage != null) {
         %><p style="color:red"><%=errorMessage%></p><%
             }
         %>
@@ -71,7 +69,6 @@
                             <label for="caracteristicas">Caracteristicas</label>
 
                             <%
-
                                 List<modelo.Caracteristica> caracteristicas = (List<modelo.Caracteristica>) rasgosDAO.getListAllCaracteristicas();
 
                                 if (caracteristicas.isEmpty()) {
@@ -108,5 +105,9 @@
                 </div>
             </div>
         </div>
+        <% } else {%>
+        <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
+        <%}
+        %>
     </body>
 </html>

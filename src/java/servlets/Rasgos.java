@@ -23,15 +23,6 @@ import modelo.Raza;
  */
 public class Rasgos extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -50,7 +41,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al crear la categoria";
             }
             errorMessage = "Categoria  " + nombreCategoria + " creada con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearCategoria.jsp");
         }
         if ("ELIMINAR CATEGORIA".equals(request.getParameter("ELIMINAR CATEGORIA"))) {
@@ -60,7 +51,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "No se puede eliminar la categoria si está asignada a un objeto. Borra primero el objeto.";
             }
             errorMessage = "Categoria " + nombreCategoria + " eliminada con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarCategoria.jsp");
         }
 
@@ -75,7 +66,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al crear la raza";
             }
             errorMessage = "Raza  " + nombreRaza + " creada con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearRaza.jsp");
         }
         if ("ELIMINAR RAZA".equals(request.getParameter("ELIMINAR RAZA"))) {
@@ -85,7 +76,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al eliminar la raza";
             }
             errorMessage = "Raza " + nombreRaza + " eliminada con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarRaza.jsp");
         }
 
@@ -100,7 +91,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al crear la raza";
             }
             errorMessage = "Raza  " + nombreRaza + " creada con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearTipo.jsp");
         }
         if ("ELIMINAR TIPO".equals(request.getParameter("ELIMINAR TIPO"))) {
@@ -110,7 +101,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al eliminar el tipo";
             }
             errorMessage = "Tipo " + nombreTipo + " eliminado con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarTipo.jsp");
         }
 
@@ -133,7 +124,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al crear la caracteristica";
             }
             errorMessage = "Caracteristica  " + nombreCaracteristica + " creada con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearCaracteristica.jsp");
         }
         if ("ELIMINAR CARACTERISTICA".equals(request.getParameter("ELIMINAR CARACTERISTICA"))) {
@@ -145,7 +136,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al eliminar la caracteristica";
             }
             errorMessage = "Caracteristica " + nombreCaracteristica + " eliminada con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarCaracteristica.jsp");
         }
         if ("ANYADIR CARACTERISTICA".equals(request.getParameter("ANYADIR CARACTERISTICA"))) {
@@ -158,7 +149,7 @@ public class Rasgos extends HttpServlet {
                 errorMessage = "Error al anyadir la caracteristica";
             }
             errorMessage = "Caracteristica  " + nombreCaracteristica + " anyadida con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/anyadirCaracteristicaObjeto.jsp");
         }
 

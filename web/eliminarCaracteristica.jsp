@@ -1,9 +1,3 @@
-<%-- 
-    Document   : eliminarCaracteristica
-    Created on : 13-may-2018, 21:35:20
-    Author     : THOR
---%>
-
 <%@page import="java.util.List"%>
 <%@page import="modelo.Caracteristica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,6 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>ELIMINAR CARACTERISTICA</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -22,8 +17,10 @@
         <div class="container">
             <h1>Elminar caracteristicas</h1>
             <%
-                Object errorMessage = request.getAttribute("errorMessage");
-                if (errorMessage != null) {
+                modelo.User user = (modelo.User) session.getAttribute("usuario");
+                if (user.isIsadmin()) {
+                Object errorMessage = session.getAttribute("status");
+                    if (errorMessage != null) {
             %><p><%=errorMessage%></p><%
                 }
             %>
@@ -54,8 +51,10 @@
                         </select>
                         <button class="btn btn-primary" type="submit" value="ELIMINAR CARACTERISTICA" name="ELIMINAR CARACTERISTICA">ELIMINAR CARACTERISTICA</button>
                     </form>
-                    <%
-                        }
+                    <% }
+                    } else {%>
+                    <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
+                    <%}
                     %>
                 </div>
             </div>

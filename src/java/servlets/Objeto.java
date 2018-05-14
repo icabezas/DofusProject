@@ -35,7 +35,7 @@ public class Objeto extends HttpServlet {
                 errorMessage = "Error al eliminar el usuario";
             }
             errorMessage = "Objeto " + objtName + " eliminado con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarObjeto.jsp");
         }
         if ("CREAR OBJETO".equals(request.getParameter("CREAR OBJETO"))) {
@@ -67,7 +67,7 @@ public class Objeto extends HttpServlet {
             } catch (Exception ex) {
             }
 
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearObjeto.jsp");
         }
     }

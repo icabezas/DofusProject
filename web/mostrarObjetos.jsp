@@ -1,9 +1,3 @@
-<%-- 
-    Document   : mostrarObjetos
-    Created on : 14-may-2018, 0:01:29
-    Author     : THOR
---%>
-
 <%@page import="modelo.Caracteristica"%>
 <%@page import="modelo.Objeto"%>
 <%@page import="java.util.List"%>
@@ -12,17 +6,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>OBJETOS</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <script src="js/bootstrap.js" type="text/javascript"></script>    </head>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+    </head>
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
             <h1>LISTADO OBJETOS</h1>
             <%
-                Object errorMessage = request.getAttribute("errorMessage");
+                modelo.User user = (modelo.User) session.getAttribute("usuario");
+                if (user.isIsadmin()) {
+                Object errorMessage = session.getAttribute("status");
                 if (errorMessage != null) {
             %><p><%=errorMessage%></p><%
                 }
@@ -83,6 +81,9 @@
         </div>
 
         <% }
+        } else {%>
+        <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
+        <%}
         %>
     </body>
 </html>

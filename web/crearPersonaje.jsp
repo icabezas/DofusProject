@@ -1,8 +1,3 @@
-<%-- 
-    Document   : crearPersonaje
-    Created on : 14-may-2018, 0:28:12
-    Author     : THOR
---%>
 
 <%@page import="modelo.Tipo"%>
 <%@page import="modelo.Raza"%>
@@ -12,7 +7,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+        <title>CREAR PERSONAJE</title>
+       <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -22,9 +18,10 @@
 
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <%
+            modelo.User user = (modelo.User) session.getAttribute("usuario");
             daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
 
-            Object errorMessage = session.getAttribute("errorMessage");
+                Object errorMessage = session.getAttribute("status");
             if (errorMessage != null) {
         %><p><%=errorMessage%></p><%
             }
@@ -34,10 +31,13 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="form-group">
+                            <label for="usuario">Usuario</label>
+                            <input required readonly type="text" class="form-control" name="usuario" id="usuario" value="<%=user.getNombre()%>">
+                        </div>
+                        <div class="form-group">
                             <label for="nombrePersonaje">Nombre</label>
                             <input required type="text" class="form-control" name="nombrePersonaje" id="nombrePersonaje" placeholder="Nombre">
                         </div>
-
                         <div class="form-group">
                             <label for="razaPersonaje">Raza</label>
 

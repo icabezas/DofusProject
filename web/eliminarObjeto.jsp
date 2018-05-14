@@ -13,6 +13,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>ELIMINAR OBJETO</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -22,11 +23,14 @@
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
+            <%
+                modelo.User user = (modelo.User) session.getAttribute("usuario");
+                if (user.isIsadmin()) {
+                Object errorMessage = session.getAttribute("status");
+                    if (errorMessage != null) {
+            %><p><%=errorMessage%></p>
             <h1>Elminar objeto</h1>
             <%
-                Object errorMessage = request.getAttribute("errorMessage");
-                if (errorMessage != null) {
-            %><p><%=errorMessage%></p><%
                 }
             %>
             <p>Listado de objetos</p>
@@ -56,8 +60,10 @@
                         </select>
                         <button class="btn btn-primary" type="submit" value="ELIMINAR OBJETO" name="ELIMINAR OBJETO">ELIMINAR OBJETO</button>
                     </form>
-                    <%
-                        }
+                    <% }
+                    } else {%>
+                    <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
+                    <%}
                     %>
                 </div>
             </div>

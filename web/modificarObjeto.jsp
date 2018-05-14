@@ -1,14 +1,12 @@
-<%-- 
-    Document   : modificarObjeto
-    Created on : 13-may-2018, 23:29:47
-    Author     : THOR
---%>
-
+<%@page import="modelo.Caracteristica"%>
+<%@page import="modelo.Categoria"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
+   <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>MODIFICAR OBJETO</title>
         <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -18,9 +16,11 @@
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <%
-            daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
-            Object errorMessage = request.getAttribute("status");
-            if (errorMessage != null) {
+            modelo.User user = (modelo.User) session.getAttribute("usuario");
+            if (user.isIsadmin()) {
+                daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
+                Object errorMessage = session.getAttribute("status");
+                if (errorMessage != null) {
         %><p style="color:red"><%=errorMessage%></p><%
             }
         %>
@@ -91,14 +91,16 @@
                         <%
                             if (categorias.isEmpty() || caracteristicas.isEmpty()) {
                         %>
-                        <button disabled type="submit" class="btn btn-primary" name="CREAR OBJETO" value="CREAR OBJETO">CREAR OBJETO</button>
+                        <button disabled type="submit" class="btn btn-primary" name="MODIFICAR OBJETO" value="MODIFICAR OBJETO">MODIFICAR OBJETO</button>
 
                         <%
                         } else {
                         %>
-                        <button type="submit" class="btn btn-primary" name="CREAR OBJETO" value="CREAR OBJETO">CREAR OBJETO</button>
-                        <%
-                            }
+                        <button type="submit" class="btn btn-primary" name="MODIFICAR OBJETO" value="MODIFICAR OBJETO">MODIFICAR OBJETO</button>
+                        <% }
+                        } else {%>
+                        <h2>NO TIENES ACCESO A ESTA PÁGINA</h2>
+                        <%}
                         %>
                     </form>
                 </div>

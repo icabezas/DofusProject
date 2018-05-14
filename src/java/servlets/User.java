@@ -32,7 +32,7 @@ public class User extends HttpServlet {
                 errorMessage = "Error al eliminar el usuario";
             }
             errorMessage = "Usuario " + userName + " eliminado con éxito";
-            request.setAttribute("errorMessage", errorMessage);
+            request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarUsuario.jsp");
         }
     }
