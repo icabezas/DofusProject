@@ -5,12 +5,16 @@
  */
 package servlets;
 
+import daos.PersonajeDAO;
+import daos.RasgosDAO;
+import daos.UsuarioDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Raza;
+import modelo.Tipo;
 
 /**
  *
@@ -18,29 +22,33 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Personaje extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Personaje</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Personaje at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        PersonajeDAO personajeDAO = new PersonajeDAO();
+        RasgosDAO rasgosDAO = new RasgosDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        String errorMessage = "";
+        if ("CREAR PERSONAJE".equals(request.getParameter("CREAR PERSONAJE"))) {
+            try {
+                String nombre = request.getParameter("nombrePersonaje");
+                Raza raza  = rasgosDAO.getRazaByName(request.getParameter("razaPersonaje"));
+                Tipo tipo  = rasgosDAO.getTipoByName(request.getParameter("tipoPersonaje"));
+                User user =  (User)request.getSession(true).getAttribute("usuario");
+                modelo.Personaje personaje = new modelo.Personaje();
+                personaje.setNombre(nombre);
+                personaje.setNivel(1);
+                personaje.setRaza(raza);
+                personaje.setTipo(tipo);
+                personajeDAO.crearPersonaje(personaje);
+            } catch (Exception ex) {
+                errorMessage = "Error al crear el personaje";
+            }
+            request.getSession(true).setAttribute("errorMessage", errorMessage);
+            response.sendRedirect(request.getContextPath() + "/crearPersonaje.jsp");
+        }
+        if ("MOSTRAR PERSONAJES".equals(request.getParameter("MOSTRAR PERSONAJES"))) {
+            
         }
     }
 

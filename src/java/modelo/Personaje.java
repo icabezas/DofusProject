@@ -17,6 +17,11 @@ public class Personaje {
     private Tipo tipo;
     private User user;
 
+    public Personaje() {
+    }
+
+    
+    
     public Personaje(int idpersonaje, String nombre, int nivel, Raza raza, Tipo tipo, User user) {
         this.idpersonaje = idpersonaje;
         this.nombre = nombre;

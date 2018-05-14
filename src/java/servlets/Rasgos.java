@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import daos.ObjetoDAO;
 import daos.RasgosDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,6 +36,7 @@ public class Rasgos extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         RasgosDAO rasgosDAO = new RasgosDAO();
+        ObjetoDAO objetoDAO = new ObjetoDAO();
         String errorMessage = "";
 
         //CATEGORIA
@@ -99,17 +101,17 @@ public class Rasgos extends HttpServlet {
             }
             errorMessage = "Raza  " + nombreRaza + " creada con éxito";
             request.setAttribute("errorMessage", errorMessage);
-            response.sendRedirect(request.getContextPath() + "/crearRaza.jsp");
+            response.sendRedirect(request.getContextPath() + "/crearTipo.jsp");
         }
         if ("ELIMINAR TIPO".equals(request.getParameter("ELIMINAR TIPO"))) {
             try {
-                rasgosDAO.eliminarRaza(nombreRaza);
+                rasgosDAO.eliminarTipo(nombreTipo);
             } catch (Exception ex) {
-                errorMessage = "Error al eliminar la raza";
+                errorMessage = "Error al eliminar el tipo";
             }
-            errorMessage = "Raza " + nombreRaza + " eliminada con éxito";
+            errorMessage = "Tipo " + nombreTipo + " eliminado con éxito";
             request.setAttribute("errorMessage", errorMessage);
-            response.sendRedirect(request.getContextPath() + "/eliminarRaza.jsp");
+            response.sendRedirect(request.getContextPath() + "/eliminarTipo.jsp");
         }
 
         //CARACTERISTICA
@@ -130,7 +132,7 @@ public class Rasgos extends HttpServlet {
             } catch (Exception ex) {
                 errorMessage = "Error al crear la caracteristica";
             }
-            errorMessage = "Caracteristica  " + nombreRaza + " creada con éxito";
+            errorMessage = "Caracteristica  " + nombreCaracteristica + " creada con éxito";
             request.setAttribute("errorMessage", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearCaracteristica.jsp");
         }
@@ -145,6 +147,19 @@ public class Rasgos extends HttpServlet {
             errorMessage = "Caracteristica " + nombreCaracteristica + " eliminada con éxito";
             request.setAttribute("errorMessage", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarCaracteristica.jsp");
+        }
+        if ("ANYADIR CARACTERISTICA".equals(request.getParameter("ANYADIR CARACTERISTICA"))) {
+            try {
+                modelo.Caracteristica caracteristica = rasgosDAO.getCaracteristicaByName(nombreCaracteristica);
+                String nombreObjeto = request.getParameter("nombreObjeto");
+                modelo.Objeto objeto = objetoDAO.getObjetoByNombre(nombreObjeto);
+                objetoDAO.anyadirObjetoCaracteristica(objeto, caracteristica);
+            } catch (Exception ex) {
+                errorMessage = "Error al anyadir la caracteristica";
+            }
+            errorMessage = "Caracteristica  " + nombreCaracteristica + " anyadida con éxito";
+            request.setAttribute("errorMessage", errorMessage);
+            response.sendRedirect(request.getContextPath() + "/anyadirCaracteristicaObjeto.jsp");
         }
 
     }

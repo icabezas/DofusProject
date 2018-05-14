@@ -20,7 +20,7 @@ import modelo.User;
  *
  * @author THOR
  */
-public class UsuarioDAO {
+public class UsuarioDAO extends DbDAO{
 
     Connection conexion;
 
@@ -58,6 +58,26 @@ public class UsuarioDAO {
         return usuarios;
     }
     
+    public List<User> getListUsers() throws SQLException {
+        conectar();
+        String query = "select * from usuario";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<User> usuarios = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User();
+            user.setNombre(rs.getString("nombre"));
+            user.setPassword(rs.getString("passwd"));
+            user.setLevel(rs.getInt("nivel"));
+            user.setIsadmin(rs.getBoolean("isAdmin"));
+            usuarios.add(user);
+        }
+        rs.close();
+        st.close();
+        desconectar();
+        return usuarios;
+    }
+    
     //ELIMINAR USUARIO
     public void eliminarUsuario(String userName) throws SQLException{
         conectar();
@@ -69,7 +89,7 @@ public class UsuarioDAO {
     }
 
     //FUNCION AUXILIAR
-    public User getUserByUsername(String userName) throws SQLException, DofusException {
+    public User getUserByUsername(String userName) throws SQLException {
         conectar();
         User user = new User();
         String select = "select * from usuario where nombre='" + userName + "'";
@@ -114,8 +134,9 @@ public class UsuarioDAO {
             return false;
         }
     }
-
+    
     // ********************* Conectar / Desconectar ****************************//
+
     public void conectar() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/dofus";
         String user = "root";

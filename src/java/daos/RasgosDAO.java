@@ -21,7 +21,7 @@ import modelo.Tipo;
  *
  * @author THOR
  */
-public class RasgosDAO {
+public class RasgosDAO extends DbDAO {
     //DAO GENERAL PARA CATEGORIA, TIPO, RAZA, CARACTERISTICAS
 
     Connection conexion;
@@ -216,6 +216,22 @@ public class RasgosDAO {
         desconectar();
     }
 
+    public Caracteristica getCaracteristicaByID(int idCaracteristica) throws SQLException {
+        conectar();
+        Caracteristica caracteristica = new Caracteristica();
+        String select = "select * from caracteristica where idCaracteristica='" + idCaracteristica + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(select);
+        if (rs.next()) {
+            caracteristica.setNombre(rs.getString("nombre"));
+            caracteristica.setIdCaracteristica(idCaracteristica);
+        }
+        rs.close();
+        st.close();
+        desconectar();
+        return caracteristica;
+    }
+
     public Caracteristica getCaracteristicaByName(String caracteristicaNombre) throws SQLException {
         conectar();
         Caracteristica caracteristica = new Caracteristica();
@@ -266,8 +282,8 @@ public class RasgosDAO {
         desconectar();
         return lastID + 1;
     }
-
     // ********************* Conectar / Desconectar ****************************//
+
     public void conectar() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/dofus";
         String user = "root";
@@ -280,4 +296,5 @@ public class RasgosDAO {
             conexion.close();
         }
     }
+
 }

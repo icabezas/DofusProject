@@ -29,7 +29,7 @@
                     <div class="col-lg-3">
                         <div class="form-group">
                             <label for="nombreTipo">Nombre</label>
-                            <input required type="text" class="form-control" name="nombreTipo" id="nombreTipo" placeholder="Nombre de la raza">
+                            <input required type="text" class="form-control" name="nombreTipo" id="nombreTipo" placeholder="Nombre del tipo">
                         </div>
                     </div>
                 </div>

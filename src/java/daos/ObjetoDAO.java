@@ -21,19 +21,16 @@ import modelo.Objeto;
  *
  * @author THOR
  */
-public class ObjetoDAO {
+public class ObjetoDAO extends DbDAO {
 
     Connection conexion;
     RasgosDAO rasgosDAO = new RasgosDAO();
 
-    //TO-DO COMPROBAR SI EL OBJETO LO TIENE ALGUN PERSONAJE, SI ES ASÍ, BORRARSELO AL PERSONAJE
     public void eliminarObjeto(Objeto objeto) throws SQLException {
         conectar();
         String delete = "delete from objeto where nombre = '" + objeto.getNombre() + "'";
-        String delete2 = "delete from caracteristicaobjeto where idObjeto = " + objeto.getIdobjeto();
         Statement st = conexion.createStatement();
         st.executeUpdate(delete);
-        st.executeUpdate(delete2);
         st.close();
         desconectar();
     }
@@ -51,13 +48,24 @@ public class ObjetoDAO {
         ps.close();
         desconectar();
     }
-    
-    public void crearObjetoCaracteristica( Caracteristica caracteristica) throws SQLException{
+
+    public void crearObjetoCaracteristica(Caracteristica caracteristica) throws SQLException {
         conectar();
         String insert = "insert into caracteristicaobjeto values (?,?)";
         PreparedStatement ps = conexion.prepareStatement(insert);
         ps.setInt(1, caracteristica.getIdCaracteristica());
-        ps.setInt(2, getLastID()-1);
+        ps.setInt(2, getLastID() - 1);
+        ps.executeUpdate();
+        ps.close();
+        desconectar();
+    }
+
+    public void anyadirObjetoCaracteristica(Objeto objeto, Caracteristica caracteristica) throws SQLException {
+        conectar();
+        String insert = "insert into caracteristicaobjeto values (?,?)";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setInt(1, caracteristica.getIdCaracteristica());
+        ps.setInt(2, objeto.getIdobjeto());
         ps.executeUpdate();
         ps.close();
         desconectar();
@@ -109,6 +117,23 @@ public class ObjetoDAO {
         return objetos;
     }
 
+    public List<Caracteristica> getCaracteristicasObjeto(Objeto obj) throws SQLException {
+        conectar();
+        RasgosDAO rasgosDAO = new RasgosDAO();
+        String query = "select * from caracteristicaobjeto where idObjeto=" + obj.getIdobjeto();
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<Caracteristica> caracteristicas = new ArrayList<>();
+        while (rs.next()) {
+            Caracteristica caracteristica = rasgosDAO.getCaracteristicaByID(rs.getInt("idCaracteristica"));
+            caracteristicas.add(caracteristica);
+        }
+        rs.close();
+        st.close();
+        desconectar();
+        return caracteristicas;
+    }
+
     //FUNCIONES AUXILIARES
     public int getLastID() throws SQLException {
         conectar();
@@ -124,8 +149,8 @@ public class ObjetoDAO {
         desconectar();
         return lastID + 1;
     }
-
     // ********************* Conectar / Desconectar ****************************//
+
     public void conectar() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/dofus";
         String user = "root";

@@ -13,10 +13,6 @@
         <servlet-class>servlets.Rasgos</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Tipo</servlet-name>
-        <servlet-class>servlets.Tipo</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>User</servlet-name>
         <servlet-class>servlets.User</servlet-class>
     </servlet>
@@ -35,10 +31,6 @@
     <servlet-mapping>
         <servlet-name>Rasgos</servlet-name>
         <url-pattern>/Rasgos</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Tipo</servlet-name>
-        <url-pattern>/Tipo</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>User</servlet-name>
