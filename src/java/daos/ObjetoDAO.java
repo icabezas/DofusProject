@@ -16,6 +16,7 @@ import java.util.List;
 import modelo.Caracteristica;
 import modelo.Categoria;
 import modelo.Objeto;
+import modelo.Personaje;
 
 /**
  *
@@ -55,6 +56,17 @@ public class ObjetoDAO extends DbDAO {
         PreparedStatement ps = conexion.prepareStatement(insert);
         ps.setInt(1, caracteristica.getIdCaracteristica());
         ps.setInt(2, getLastID() - 1);
+        ps.executeUpdate();
+        ps.close();
+        desconectar();
+    }
+    
+    public void anyadirObjetoAPersonaje(Objeto objeto, Personaje personaje) throws SQLException{
+        conectar();
+        String insert ="insert into objetopersonaje values(?,?)";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setInt(1, objeto.getIdobjeto());
+        ps.setInt(2, personaje.getIdpersonaje());
         ps.executeUpdate();
         ps.close();
         desconectar();

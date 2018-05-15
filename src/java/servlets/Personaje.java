@@ -32,9 +32,9 @@ public class Personaje extends HttpServlet {
         if ("CREAR PERSONAJE".equals(request.getParameter("CREAR PERSONAJE"))) {
             try {
                 String nombre = request.getParameter("nombrePersonaje");
-                Raza raza  = rasgosDAO.getRazaByName(request.getParameter("razaPersonaje"));
-                Tipo tipo  = rasgosDAO.getTipoByName(request.getParameter("tipoPersonaje"));
-                modelo.User user =  usuarioDAO.getUserByUsername(request.getParameter("usuario"));
+                Raza raza = rasgosDAO.getRazaByName(request.getParameter("razaPersonaje"));
+                Tipo tipo = rasgosDAO.getTipoByName(request.getParameter("tipoPersonaje"));
+                modelo.User user = usuarioDAO.getUserByUsername(request.getParameter("usuario"));
                 modelo.Personaje personaje = new modelo.Personaje();
                 personaje.setUser(user);
                 personaje.setNombre(nombre);
@@ -47,6 +47,47 @@ public class Personaje extends HttpServlet {
             }
             request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearPersonaje.jsp");
+        }
+        if ("MODIFICAR PERSONAJE".equals(request.getParameter("MODIFICAR PERSONAJE"))) {
+
+            String nombre = request.getParameter("nombrePersonaje");
+            modelo.Personaje personaje = null;
+            try {
+                personaje = personajeDAO.getPersonajeByNombre(nombre);
+            } catch (Exception ex) {
+                errorMessage = "No se han podido recuperar los datos del personaje";
+            }
+            request.getSession(true).setAttribute("personaje", personaje);
+            
+            response.sendRedirect(request.getContextPath() + "/modificarPersonaje.jsp");
+        }
+        if ("MODIFICAR".equals(request.getParameter("MODIFICAR"))) {
+
+            String nombre = request.getParameter("nombrePersonaje");
+            modelo.Personaje personaje = null;
+            try {
+                personaje = personajeDAO.getPersonajeByNombre(nombre);
+                Raza raza = rasgosDAO.getRazaByName(request.getParameter("raza"));
+                personaje.setRaza(raza);
+                Tipo tipo = rasgosDAO.getTipoByName(request.getParameter("tipo"));
+                personajeDAO.modificarPersonaje(personaje);
+            } catch (Exception ex) {
+                errorMessage = "Error al modificar los datos del personaje";
+            }
+            request.getSession(true).setAttribute("status", personaje);
+            
+            response.sendRedirect(request.getContextPath() + "/mostrarPersonajes.jsp");
+        }
+        if ("ELIMINAR PERSONAJE".equals(request.getParameter("ELIMINAR PERSONAJE"))) {
+            try {
+                String nombre = request.getParameter("nombrePersonaje");
+                modelo.Personaje personaje = personajeDAO.getPersonajeByNombre(nombre);
+                personajeDAO.eliminarPersonaje(personaje);
+            } catch (Exception ex) {
+                errorMessage = "Error al eliminar el personaje";
+            }
+            request.getSession(true).setAttribute("status", errorMessage);
+            response.sendRedirect(request.getContextPath() + "/mainScreen.jsp");
         }
 
     }

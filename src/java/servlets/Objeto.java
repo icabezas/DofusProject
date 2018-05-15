@@ -25,6 +25,8 @@ public class Objeto extends HttpServlet {
         String caracteristicaName = request.getParameter("caracteristicaObjeto");
         daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
         daos.RasgosDAO rasgosDAO = new daos.RasgosDAO();
+        daos.PersonajeDAO personajeDAO = new daos.PersonajeDAO();
+        modelo.Personaje personaje = new modelo.Personaje();
         String errorMessage = "";
         modelo.Objeto objeto = null;
         if ("ELIMINAR OBJETO".equals(request.getParameter("ELIMINAR OBJETO"))) {
@@ -37,6 +39,20 @@ public class Objeto extends HttpServlet {
             errorMessage = "Objeto " + objtName + " eliminado con éxito";
             request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarObjeto.jsp");
+        }
+        if ("ADQUIRIR OBJETO".equals(request.getParameter("ADQUIRIR OBJETO"))) {
+            try {
+                String objetoName = request.getParameter("objeto");
+                String personajeName = request.getParameter("personaje");
+                objeto = objetoDAO.getObjetoByNombre(objetoName);
+                personaje = personajeDAO.getPersonajeByNombre(personajeName);
+                objetoDAO.anyadirObjetoAPersonaje(objeto, personaje);
+            } catch (Exception ex) {
+                errorMessage = "Error al eliminar el usuario";
+            }
+            errorMessage = "Objeto " + objtName + " adquirido con éxito";
+            request.getSession(true).setAttribute("status", errorMessage);
+            response.sendRedirect(request.getContextPath() + "/adquirirObjeto.jsp");
         }
         if ("CREAR OBJETO".equals(request.getParameter("CREAR OBJETO"))) {
             String nombreObjeto = request.getParameter("nombreObjeto");
@@ -55,14 +71,14 @@ public class Objeto extends HttpServlet {
                         objeto.setDescripcion(descripcion);
                         objeto.setNivel(nivel);
                         objeto.setCategoria(categoriaObjeto);
-                        
+
                         objetoDAO.crearObjeto(objeto);
                         objetoDAO.crearObjetoCaracteristica(caracteristica);
+                        errorMessage = "Objeto  " + nombreObjeto + " creado con éxito";
                     } catch (Exception ex) {
                         System.out.println("ERRORRR" + ex.getMessage());
                         errorMessage = "Error al crear el objeto";
                     }
-                    errorMessage = "Objeto  " + nombreObjeto + " creado con éxito";
                 }
             } catch (Exception ex) {
             }

@@ -5,6 +5,7 @@
  */
 package daos;
 
+import exceptions.DofusException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,6 +42,15 @@ public class PersonajeDAO extends DbDAO {
         desconectar();
     }
 
+    public void modificarPersonaje(Personaje personaje) throws SQLException, DofusException {
+        conectar();
+        Statement st = conexion.createStatement();
+        String update = "update personaje set raza='" + personaje.getRaza().getNombre() + "' and tipo = '" + personaje.getTipo().getNombre() + "' where nombre = '" + personaje.getNombre() + "';";
+        st.executeUpdate(update);
+        st.close();
+        desconectar();
+    }
+
     public void eliminarPersonaje(Personaje personaje) throws SQLException {
         conectar();
         String delete = "delete from personaje where nombre = '" + personaje.getNombre() + "'";
@@ -72,7 +82,6 @@ public class PersonajeDAO extends DbDAO {
         desconectar();
         return personaje;
     }
-    
 
     public List<Personaje> getListAllPersonajes() throws SQLException {
         conectar();
@@ -117,9 +126,9 @@ public class PersonajeDAO extends DbDAO {
         desconectar();
         return personajes;
     }
-    
+
     //RANKING PERSONAJES POR USUARIO
-    public List<Personaje> rankingPersonajesNivelPorUsuario(User user) throws SQLException{
+    public List<Personaje> rankingPersonajesNivelPorUsuario(User user) throws SQLException {
         conectar();
         String query = "select * from personaje where usuario = '" + user.getNombre() + "' order by nivel desc";
         Statement st = conexion.createStatement();
@@ -140,8 +149,9 @@ public class PersonajeDAO extends DbDAO {
         desconectar();
         return personajes;
     }
+
     //RANKING PERSONAJES
-    public List<Personaje> rankingPersonajesNivel() throws SQLException{
+    public List<Personaje> rankingPersonajesNivel() throws SQLException {
         conectar();
         String query = "select * from personaje order by nivel desc";
         Statement st = conexion.createStatement();

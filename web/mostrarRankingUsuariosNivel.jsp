@@ -16,7 +16,7 @@
     <body>
         <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
-            <h1>LISTADO USUARIOS</h1>
+            <h1>RANKING USUARIOS</h1>
             <%
                 modelo.User user = (modelo.User) session.getAttribute("usuario");
                 if (user.isIsadmin()) {

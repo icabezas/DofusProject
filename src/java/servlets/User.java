@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class User extends HttpServlet {
 
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,6 +31,34 @@ public class User extends HttpServlet {
                 errorMessage = "Error al eliminar el usuario";
             }
             errorMessage = "Usuario " + userName + " eliminado con éxito";
+            request.getSession(true).setAttribute("status", errorMessage);
+            response.sendRedirect(request.getContextPath() + "/eliminarUsuario.jsp");
+        }
+        if ("MODIFICAR CONTRASENYA".equals(request.getParameter("MODIFICAR CONTRASENYA"))) {
+            modelo.User user = new modelo.User();
+            try {
+                user = usuarioDAO.getUserByUsername(request.getParameter("usuario"));
+            } catch (Exception ex) {
+                errorMessage = ex.getMessage();
+            }
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword1 = request.getParameter("newPassword1");
+            String newPassword2 = request.getParameter("newPassword2");
+
+            if (!usuarioDAO.checkPasswords(newPassword1, newPassword2)) {
+                errorMessage = "Las contraseñas no coinciden";
+            }
+            if (usuarioDAO.checkPasswords(oldPassword, newPassword1)) {
+                errorMessage = "La nueva ontraseña no puede ser igual a la anterior";
+            }
+            if(usuarioDAO.checkPasswords(user.getPassword(), oldPassword)){
+                errorMessage = "Contraseña incorrecta";
+            }
+            try {
+                usuarioDAO.cambiarContraseña(user);
+            } catch (Exception ex) {
+                errorMessage = ex.getMessage();
+            }
             request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/eliminarUsuario.jsp");
         }

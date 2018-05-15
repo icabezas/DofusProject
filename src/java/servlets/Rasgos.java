@@ -90,7 +90,7 @@ public class Rasgos extends HttpServlet {
             } catch (Exception ex) {
                 errorMessage = "Error al crear la raza";
             }
-            errorMessage = "Raza  " + nombreRaza + " creada con éxito";
+            errorMessage = "Tipo  " + nombreTipo + " creada con éxito";
             request.getSession(true).setAttribute("status", errorMessage);
             response.sendRedirect(request.getContextPath() + "/crearTipo.jsp");
         }

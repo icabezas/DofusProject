@@ -109,6 +109,15 @@ public class UsuarioDAO extends DbDAO {
         return usuarios;
     }
 
+    public void cambiarContraseña(User user) throws SQLException {
+        conectar();
+        Statement st = conexion.createStatement();
+        String update = "update usuario set passwd ='" + user.getPassword() + "' where nombre = '" + user.getNombre() + "'";
+        st.executeUpdate(update);
+        st.close();
+        desconectar();
+    }
+
     //FUNCION AUXILIAR
     public User getUserByUsername(String userName) throws SQLException {
         conectar();

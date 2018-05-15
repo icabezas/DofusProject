@@ -18,13 +18,13 @@
         <div class="container">
             <%
                 modelo.User user = (modelo.User) session.getAttribute("usuario");
-
                 Object errorMessage = session.getAttribute("status");
-                    if (errorMessage != null) {
+                if (errorMessage != null) {
             %><p><%=errorMessage%></p>
             <h1>RANKING PERSONAJES</h1>
             <%
                 }
+
                 daos.PersonajeDAO personajeDAO = new daos.PersonajeDAO();
 
                 List<modelo.Personaje> personajes = (List<modelo.Personaje>) personajeDAO.rankingPersonajesNivel();
@@ -36,23 +36,16 @@
             } else {
             %>
             <div class="row">
-
                 <div class="col-lg-6">
+                    <h2>RANKING PERSONAJES</h2>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>NOMBRE</th>
                                 <th>NIVEL</th>
                                 <th>RAZA</th>
-                                <th>TIPO</th>
-                                    <%
-                                        if (user.isIsadmin()) {
-                                    %>
+                                <th>TIPO</th>                                  
                                 <th>USUARIO</th>
-                                    <%
-                                        }
-                                    %>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,18 +60,11 @@
                                     String usuario = personaje.getUser().getNombre();
                             %>
                             <tr>
-                                <td><%=id%></td>
                                 <td><%=nombre%></td>
                                 <td><%=nivel%></td>
                                 <td><%=raza%></td>
                                 <td><%=tipo%></td>
-                                <%
-                                    if (user.isIsadmin()) {
-                                %>
                                 <td><%=usuario%></td>
-                                <%
-                                    }
-                                %>
                             </tr>
                             <%
                                 }

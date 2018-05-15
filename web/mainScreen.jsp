@@ -4,6 +4,8 @@
     Author     : THOR
 --%>
 
+<%@page import="modelo.Personaje"%>
+<%@page import="daos.PersonajeDAO"%>
 <%@page import="modelo.User"%>
 <%@page import="java.util.List"%>
 <%@page import="daos.UsuarioDAO"%>
@@ -26,21 +28,25 @@
             modelo.User user = (modelo.User) session.getAttribute("usuario");
         %>
         <p>Bienvenid@ <%=user.getNombre()%></p>
-        <%
 
-            if (user.isIsadmin()) {%>
+
+
         <div class="container">
             <h1>ADMINISTRACION</h1>
             <div class="row">
                 <div class="col-lg-6">
                     <h3>USUARIO</h3>
-                    <form action="/eliminar/eliminarUsuario.jsp" method="POST">
+                    <form action="modificarContrasenya.jsp" moethod="POST">
+                        <button class="btn btn-primary" type="submit" value="MODIFICAR CONTRASENYA">MODIFICAR CONTRASEÑA</button>
+                    </form>
+                    <%if (user.isIsadmin()) {%>
+                    <form action="eliminarUsuario.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="ELIMINAR USUARIO">ELIMINAR USUARIO</button>
                     </form>
                     <form action="mostrarUsuarios.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="MOSTRAR USUARIOS">MOSTRAR USUARIOS</button>
                     </form>
-                    <a href="ranking/rankingPersonajesPorUsuario.jsp"></a>
+                    <a href="rankingPersonajesPorUsuario.jsp"></a>
                     <a href="mainScreen.jsp"></a>
                     <hr>
                     <h3>OBJETOS</h3>
@@ -143,6 +149,8 @@
                     <form action="mostrarRankingPersonajesNivel.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="MOSTRAR RANKING PERSONAJES">RANKING TODOS PERSONAJES</button>
                     </form>
+                    <hr>
+
                 </div>
             </div>
         </div>
@@ -151,22 +159,86 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
+
                     <h3>PERSONAJES</h3>
-                    <form action="eliminarPersonaje.jsp" method="POST">
-                        <button class="btn btn-primary" type="submit" value="ELIMINAR PERSONAJE">ELIMINAR PERSONAJE</button>
-                    </form>
                     <form action="crearPersonaje.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="CREAR PERSONAJE">CREAR PERSONAJE</button>
                     </form>
-                    <hr>
-                    <form action="modificarPersonaje.jsp" method="POST">
-                        <button class="btn btn-primary" type="submit" value="MODIFICAR PERSONAJE">MODIFICAR PERSONAJE</button>
+                    <form action="Personaje" method="POST">
+                        <div class="form-group">
+
+                            <label for="nombrePersonaje">Personajes</label>
+
+                            <%
+                                PersonajeDAO personajeDAO = new PersonajeDAO();
+                                List<modelo.Personaje> personajes = (List<modelo.Personaje>) personajeDAO.getListAllPersonajesPorUsuario(user);
+                                if (personajes.isEmpty()) {
+                            %>irene 
+                            <p> NO HAY PERSONAJES </p>
+                            <%
+                            } else {
+                            %>
+
+                            <select class="form-control" id="nombrePersonaje" name="nombrePersonaje">
+                                <%
+                                    for (Personaje pers : personajes) {
+                                        String nombre = pers.getNombre();
+                                %>
+                                <option value="<%= nombre%>"><%= nombre%></option> 
+                                <% }
+                                    }
+                                %>
+                            </select>
+                            <button class="btn btn-primary" type="submit" name="ELIMINAR PERSONAJE" value="ELIMINAR PERSONAJE">ELIMINAR PERSONAJE</button>
+                        </div>
                     </form>
+                    <hr>
+                    <form action="Personaje" method="POST">
+                        <div class="form-group">
+
+                            <label for="nombrePersonaje">Personajes</label>
+
+                            <%
+                                if (personajes.isEmpty()) {
+                            %>
+                            <p> NO HAY PERSONAJES </p>
+                            <%
+                            } else {
+                            %>
+
+                            <select class="form-control" id="nombrePersonaje" name="nombrePersonaje">
+                                <%
+                                    for (Personaje pers : personajes) {
+                                        String nombre = pers.getNombre();
+                                %>
+                                <option value="<%= nombre%>"><%= nombre%></option> 
+                                <% }
+                                    }
+                                %>
+                            </select>
+                            <button class="btn btn-primary" type="submit" name="MODIFICAR PERSONAJE" value="MODIFICAR PERSONAJE">MODIFICAR PERSONAJE</button>
+                        </div>
+                    </form>
+
                     <form action="mostrarPersonajes.jsp" method="POST">
                         <button class="btn btn-primary" type="submit" value="MOSTRAR PERSONAJES">MOSTRAR PERSONAJES</button>
                     </form>
 
                 </div>
+                <div class="col-lg-6">
+                    <h3>RANKING</h3>
+                    <form action="mostrarRankingPersonajesNivel.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="RANKING PERSONAJES">RANKING PERSONAJES</button>
+                    </form>
+                    <h3>OBJETOS</h3>
+                    <form action="adquirirObjeto.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="ADQUIRIR OBJETO">ADQUIRIR OBJETO</button>
+                    </form>
+                    <form action="mostrarObjetos.jsp" method="POST">
+                        <button class="btn btn-primary" type="submit" value="MOSTRAR OBJETOS">MOSTRAR OBJETOS</button>
+                    </form>
+                </div>
+
             </div>
             <%}
             %>
