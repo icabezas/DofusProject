@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Categoria;
+import modelo.Objeto;
+import modelo.ObjetoPersonaje;
 import modelo.Personaje;
 import modelo.User;
 
@@ -81,6 +84,41 @@ public class PersonajeDAO extends DbDAO {
         st.close();
         desconectar();
         return personaje;
+    }
+
+    public void subirNivelPersonajeObjetos(Personaje personaje) throws SQLException {
+        conectar();
+        Statement st = conexion.createStatement();
+        String update = "update personaje set nivel=" + personaje.getNivel();
+        st.executeUpdate(update);
+        st.close();
+        desconectar();
+    }
+
+    public List<ObjetoPersonaje> getListAllObjetos(Personaje personaje) throws SQLException {
+        conectar();
+        String query = "select * from objeto inner join objetopersonaje on objeto.idobjeto = objetopersonaje.idobjeto inner join personaje on objetopersonaje.idpersonaje = personaje.idpersonaje where personaje.nombre='" + personaje.getNombre() + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<ObjetoPersonaje> objetosPersonaje = new ArrayList<>();
+        ObjetoPersonaje objetoPersonaje = new ObjetoPersonaje();
+        Categoria categoria = new Categoria();
+        Objeto objeto = new Objeto();
+        while (rs.next()) {
+            objeto.setIdobjeto(rs.getInt("objeto.idObjeto"));
+            objeto.setNombre(rs.getString("objeto.nombre"));
+            categoria = rasgosDAO.getCategoriaByName(rs.getString("objeto.categoria"));
+            objeto.setCategoria(categoria);
+            objeto.setDescripcion(rs.getString("objeto.descripcion"));
+            objeto.setNivel(rs.getInt("objeto.nivel"));
+            objetoPersonaje.setPersonaje(personaje);
+            objetoPersonaje.setObjeto(objeto);
+            objetosPersonaje.add(objetoPersonaje);
+        }
+        rs.close();
+        st.close();
+        desconectar();
+        return objetosPersonaje;
     }
 
     public List<Personaje> getListAllPersonajes() throws SQLException {

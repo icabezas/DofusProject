@@ -13,9 +13,7 @@ public class ObjetoPersonaje {
     private Personaje personaje;
     private Objeto objeto;
 
-    public ObjetoPersonaje(Personaje personaje, Objeto objeto) {
-        this.personaje = personaje;
-        this.objeto = objeto;
+    public ObjetoPersonaje() {
     }
 
     public Personaje getPersonaje() {

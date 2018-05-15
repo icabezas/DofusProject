@@ -51,7 +51,11 @@ public class Login extends HttpServlet {
                 if (user.getPassword().equals(password1)) {
                     errorMessage = "";
                     request.getSession(true).setAttribute("usuario", user);
-                    response.sendRedirect(request.getContextPath() + "/mainScreen.jsp");
+                    if (user.isIsadmin()) {
+                        response.sendRedirect(request.getContextPath() + "/mainScreenAdmin.jsp");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/mainScreen.jsp");
+                    }
                 } else {
                     request.getSession(true).setAttribute("status", "Usuario registrado correctamente");
                     response.sendRedirect(request.getContextPath() + "/index.jsp");

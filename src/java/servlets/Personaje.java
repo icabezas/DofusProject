@@ -9,10 +9,14 @@ import daos.PersonajeDAO;
 import daos.RasgosDAO;
 import daos.UsuarioDAO;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.ObjetoPersonaje;
 import modelo.Raza;
 import modelo.Tipo;
 
@@ -58,7 +62,7 @@ public class Personaje extends HttpServlet {
                 errorMessage = "No se han podido recuperar los datos del personaje";
             }
             request.getSession(true).setAttribute("personaje", personaje);
-            
+
             response.sendRedirect(request.getContextPath() + "/modificarPersonaje.jsp");
         }
         if ("MODIFICAR".equals(request.getParameter("MODIFICAR"))) {
@@ -75,8 +79,39 @@ public class Personaje extends HttpServlet {
                 errorMessage = "Error al modificar los datos del personaje";
             }
             request.getSession(true).setAttribute("status", personaje);
-            
+
             response.sendRedirect(request.getContextPath() + "/mostrarPersonajes.jsp");
+        }
+
+        if ("SELECCIONAR USUARIO".equals(request.getParameter("SELECCIONAR USUARIO"))) {
+
+            String nombre = request.getParameter("usuario");
+            modelo.User user = new modelo.User();
+            try {
+                user = usuarioDAO.getUserByUsername(nombre);
+                List<modelo.Personaje> personajesUsuario = personajeDAO.getListAllPersonajesPorUsuario(user);
+                request.getSession(true).setAttribute("personajesUsuario", personajesUsuario);
+                request.getSession(true).setAttribute("status", errorMessage);
+            } catch (Exception ex) {
+                errorMessage = ex.getMessage();
+            }
+
+            response.sendRedirect(request.getContextPath() + "/mostrarObjetosPersonajeAdmin.jsp");
+        }
+        if ("SELECCIONAR PERSONAJE".equals(request.getParameter("SELECCIONAR PERSONAJE"))) {
+            try {
+                String nombre = request.getParameter("personaje");
+            modelo.Personaje personaje = personajeDAO.getPersonajeByNombre(nombre);
+            List<ObjetoPersonaje> objetosPersonaje = new ArrayList<>();
+            objetosPersonaje = personajeDAO.getListAllObjetos(personaje);
+            modelo.User user = new modelo.User();
+                request.getSession(true).setAttribute("objetos", objetosPersonaje);
+                request.getSession(true).setAttribute("status", errorMessage);
+            } catch (Exception ex) {
+                errorMessage = ex.getMessage();
+            }
+
+            response.sendRedirect(request.getContextPath() + "/mostrarObjetosPersonajeAdmin.jsp");
         }
         if ("ELIMINAR PERSONAJE".equals(request.getParameter("ELIMINAR PERSONAJE"))) {
             try {

@@ -14,95 +14,97 @@
         <script src="js/bootstrap.js" type="text/javascript"></script>
     </head>
     <body>
-        <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <%
             modelo.User user = (modelo.User) session.getAttribute("usuario");
 
         %>
+        <% if (user.isIsadmin()) {
+        %>
+        <button class="btn btn-primary" onclick="location.href = './mainScreenAdmin.jsp';" >Atrás</button>
         <div class="container">
-            <% if (user.isIsadmin()) {
-            %>
             <h1> LISTADO PERSONAJES DE <%=request.getParameter("usuarioPersonajes")%></h1>
             <%} else {%>
-            <h1> LISTADO PERSONAJES DE <%=user.getNombre()%></h1>
-            <%}
-                Object errorMessage = session.getAttribute("status");
-                if (errorMessage != null) {
-            %><p><%=errorMessage%></p><%
-                }
-                daos.PersonajeDAO personajeDAO = new daos.PersonajeDAO();
-                daos.UsuarioDAO usuarioDAO = new daos.UsuarioDAO();
-                User usuarioPersonajes = new User();
-                if (user.isIsadmin()) {
-                    String userName = request.getParameter("usuarioPersonajes");
-                    usuarioPersonajes = usuarioDAO.getUserByUsername(userName);
+            <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
+            <div class="container">
+                <h1> LISTADO PERSONAJES DE <%=user.getNombre()%></h1>
+                <%}
+                    Object errorMessage = session.getAttribute("status");
+                    if (errorMessage != null) {
+                %><p><%=errorMessage%></p><%
+                    }
+                    daos.PersonajeDAO personajeDAO = new daos.PersonajeDAO();
+                    daos.UsuarioDAO usuarioDAO = new daos.UsuarioDAO();
+                    User usuarioPersonajes = new User();
+                    if (user.isIsadmin()) {
+                        String userName = request.getParameter("usuarioPersonajes");
+                        usuarioPersonajes = usuarioDAO.getUserByUsername(userName);
+                    } else {
+                        usuarioPersonajes = user;
+                    }
+                    List<modelo.Personaje> personajes = (List<modelo.Personaje>) personajeDAO.getListAllPersonajesPorUsuario(usuarioPersonajes);
+
+                    if (personajes.isEmpty()) {
+                %>
+                <p> NO HAY PERSONAJES </p>
+                <%
                 } else {
-                    usuarioPersonajes = user;
-                }
-                List<modelo.Personaje> personajes = (List<modelo.Personaje>) personajeDAO.getListAllPersonajesPorUsuario(usuarioPersonajes);
+                %>
+                <div class="row">
 
-                if (personajes.isEmpty()) {
-            %>
-            <p> NO HAY PERSONAJES </p>
-            <%
-            } else {
-            %>
-            <div class="row">
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NOMBRE</th>
+                                    <th>NIVEL</th>
+                                    <th>RAZA</th>
+                                    <th>TIPO</th>
+                                        <%
+                                            if (user.isIsadmin()) {
+                                        %>
+                                    <th>USUARIO</th>
+                                        <%
+                                            }
+                                        %>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                <div class="col-lg-6">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>NOMBRE</th>
-                                <th>NIVEL</th>
-                                <th>RAZA</th>
-                                <th>TIPO</th>
+                                <%
+                                    for (Personaje personaje : personajes) {
+                                        int id = personaje.getIdpersonaje();
+                                        String nombre = personaje.getNombre();
+                                        int nivel = personaje.getNivel();
+                                        String raza = personaje.getRaza().getNombre();
+                                        String tipo = personaje.getTipo().getNombre();
+                                        String usuario = personaje.getUser().getNombre();
+                                %>
+                                <tr>
+                                    <td><%=id%></td>
+                                    <td><%=nombre%></td>
+                                    <td><%=nivel%></td>
+                                    <td><%=raza%></td>
+                                    <td><%=tipo%></td>
                                     <%
                                         if (user.isIsadmin()) {
                                     %>
-                                <th>USUARIO</th>
+                                    <td><%=usuario%></td>
                                     <%
                                         }
                                     %>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <%
-                                for (Personaje personaje : personajes) {
-                                    int id = personaje.getIdpersonaje();
-                                    String nombre = personaje.getNombre();
-                                    int nivel = personaje.getNivel();
-                                    String raza = personaje.getRaza().getNombre();
-                                    String tipo = personaje.getTipo().getNombre();
-                                    String usuario = personaje.getUser().getNombre();
-                            %>
-                            <tr>
-                                <td><%=id%></td>
-                                <td><%=nombre%></td>
-                                <td><%=nivel%></td>
-                                <td><%=raza%></td>
-                                <td><%=tipo%></td>
-                                <%
-                                    if (user.isIsadmin()) {
-                                %>
-                                <td><%=usuario%></td>
+                                </tr>
                                 <%
                                     }
                                 %>
-                            </tr>
-                            <%
-                                }
-                            %>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <% }
-        %>
+            <% }
+            %>
 
     </body>
 </html>
