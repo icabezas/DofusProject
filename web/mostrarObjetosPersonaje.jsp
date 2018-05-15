@@ -22,10 +22,13 @@
         <%
 
             daos.ObjetoDAO objetoDAO = new daos.ObjetoDAO();
-            List<modelo.Personaje> personajesUsuario = (List<modelo.Personaje>) session.getAttribute("personajesUsuario");
+            daos.PersonajeDAO personajeDAO = new daos.PersonajeDAO();
+            modelo.User user = (modelo.User) session.getAttribute("usuario");
             List<modelo.ObjetoPersonaje> objetoPersonaje = (List<modelo.ObjetoPersonaje>) session.getAttribute("objetos");
+            
+            List<modelo.Personaje> personajesUsuario = personajeDAO.getListAllPersonajesPorUsuario(user);
         %>
-        <button class="btn btn-primary" onclick="location.href = './mainScreenAdmin.jsp';" >Atrás</button>
+        <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
         <div class="container">
             <div class="row">
                 <div class="col-xs-6">

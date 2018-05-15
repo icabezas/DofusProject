@@ -55,7 +55,7 @@
                             <% }
                             %>
                         </select>
-                        <button class="btn btn-primary" type="submit" value="ELIMINAR CARACTERISTICA" name="ELIMINAR CARACTERISTICA">ELIMINAR CARACTERISTICA</button>
+                        <button class="btn btn-primary" type="submit" value="ELIMINAR PERSONAJE" name="ELIMINAR PERSONAJE">ELIMINAR PERSONAJE</button>
                     </form>
                     <%
                         }

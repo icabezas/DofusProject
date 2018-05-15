@@ -14,7 +14,7 @@
         <script src="js/bootstrap.js" type="text/javascript"></script>
     </head>
     <body>
-        <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
+        <button class="btn btn-primary" onclick="location.href = './mainScreenAdmin.jsp';" >Atrás</button>
         <%
             modelo.User user = (modelo.User) session.getAttribute("usuario");
             if (user.isIsadmin()) {

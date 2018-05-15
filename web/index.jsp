@@ -38,7 +38,7 @@
                             </div>
                             <input type="submit" name="Login" value="Login" class="btn btn-lg btn-primary btn-block">
                         </form>
-                        <a href="./crear/nuevoUsuario.jsp">¿Eres nuevo aquí?</a><br>
+                        <a href="./nuevoUsuario.jsp">¿Eres nuevo aquí?</a><br>
                     </div> 
                 </div>
             </div>

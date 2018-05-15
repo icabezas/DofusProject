@@ -12,7 +12,7 @@
     </head>
     <body>
 
-        <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
+        <button class="btn btn-primary" onclick="location.href = './mainScreenAdmin.jsp';" >Atrás</button>
         <%
             modelo.User user = (modelo.User) session.getAttribute("usuario");
             if (user.isIsadmin()) {
@@ -27,7 +27,7 @@
                     <div class="col-lg-3">
                         <div class="form-group">
                             <label for="nombreCategoria">Nombre</label>
-                            <input required type="text" class="form-control" name="nombreCategoria" id="nombreCategoria" placeholder="Nombre de la categoria">
+                            <input required maxlength="20"  type="text" class="form-control" name="nombreCategoria" id="nombreCategoria" placeholder="Nombre de la categoria">
                         </div>
                     </div>
                 </div>

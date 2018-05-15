@@ -32,11 +32,11 @@
                     <div class="col-lg-3">
                         <div class="form-group">
                             <label for="usuario">Usuario</label>
-                            <input required readonly type="text" class="form-control" name="usuario" id="usuario" value="<%=user.getNombre()%>">
+                            <input required maxlength="20" readonly type="text" class="form-control" name="usuario" id="usuario" value="<%=user.getNombre()%>">
                         </div>
                         <div class="form-group">
                             <label for="nombrePersonaje">Nombre</label>
-                            <input required type="text" class="form-control" name="nombrePersonaje" id="nombrePersonaje" placeholder="Nombre">
+                            <input required maxlength="20"  type="text" class="form-control" name="nombrePersonaje" id="nombrePersonaje" placeholder="Nombre">
                         </div>
                         <div class="form-group">
                             <label for="razaPersonaje">Raza</label>

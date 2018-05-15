@@ -25,11 +25,11 @@
                         <h2 class="form-sign-heading">Registro</h2>
                         <form action="Login" method="POST">
                             <label for="inputUsername">Username</label>
-                            <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Email" required autofocus>
+                            <input maxlength="20" type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Email" required autofocus>
                             <label for="inputPassword">Contraseña</label>
-                            <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Contraseña" required>
+                            <input maxlength="20"type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Contraseña" required>
                             <label for="inputRepitPassword">Repite la contraseña</label>
-                            <input type="password" id="inputRepitPassword" name="inputRepitPassword" class="form-control" placeholder="REpite contraseña" required>
+                            <input maxlength="20" type="password" id="inputRepitPassword" name="inputRepitPassword" class="form-control" placeholder="REpite contraseña" required>
                             <input type="submit" name="Registrarse" value="Registrarse" class="btn btn-lg btn-primary btn-block">
                         </form>
                         <%

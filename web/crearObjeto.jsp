@@ -15,7 +15,7 @@
         <script src="js/bootstrap.js" type="text/javascript"></script>
     </head>
     <body>
-        <button class="btn btn-primary" onclick="location.href = './mainScreen.jsp';" >Atrás</button>
+        <button class="btn btn-primary" onclick="location.href = './mainScreenAdmin.jsp';" >Atrás</button>
         <%
             modelo.User user = (modelo.User) session.getAttribute("usuario");
             if (user.isIsadmin()) {
@@ -31,7 +31,7 @@
                     <form action="Objeto" method="POST">
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
-                            <input required name="nombreObjeto" type="text" class="form-control" id="nombre" placeholder="Nombre del objeto">
+                            <input required maxlength="20" name="nombreObjeto" type="text" class="form-control" id="nombre" placeholder="Nombre del objeto">
                         </div>
                         <div class="form-group">
                             <label for="nivel">Nivel</label>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Descripción</label>
-                            <input required name="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripcion">
+                            <input required maxlength="50"  name="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripcion">
                         </div>
                         <div class="form-group">
                             <label for="categoria">Categoria</label>

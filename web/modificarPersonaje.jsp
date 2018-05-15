@@ -36,7 +36,7 @@
                     <form action="Personaje" method="POST">
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
-                            <input readonly name="nombrePersonaje" type="text" class="form-control" id="nombre" value="<%=personaje.getNombre()%>">
+                            <input maxlength="20" readonly name="nombrePersonaje" type="text" class="form-control" id="nombre" value="<%=personaje.getNombre()%>">
                         </div>
                         <div class="form-group">
                             <label for="nivel">Nivel</label>

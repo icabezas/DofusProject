@@ -30,15 +30,15 @@
                     <form action="Objeto" method="POST">
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
-                            <input required name="nombreObjeto" type="text" class="form-control" id="nombre" value="" placeholder="Nombre del objeto">
+                            <input maxlength="20" required name="nombreObjeto" type="text" class="form-control" id="nombre" value="" placeholder="Nombre del objeto">
                         </div>
                         <div class="form-group">
                             <label for="nivel">Nivel</label>
-                            <input required name="nivel" type="number" class="form-control" id="nivel" placeholder="Nivel">
+                            <input maxlength="20" required name="nivel" type="number" class="form-control" id="nivel" placeholder="Nivel">
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Descripción</label>
-                            <input required name="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripcion">
+                            <input maxlength="20" required name="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripcion">
                         </div>
                         <div class="form-group">
                             <label for="categoria">Categoria</label>

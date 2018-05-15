@@ -29,15 +29,15 @@
                     <form action="User${user.getNombre()}" method="POST">
                         <div class="form-group">
                             <label for="oldPassword">Contraseña antigua</label>
-                            <input required name="oldPassword" type="text" class="form-control" id="oldPassword" placeholder="Contraseña antigua">
+                            <input maxlength="20" required name="oldPassword" type="text" class="form-control" id="oldPassword" placeholder="Contraseña antigua">
                         </div>
                         <div class="form-group">
                             <label for="newPassword1">Nueva contraseña</label>
-                            <input required name="newPassword1" type="text" class="form-control" id="newPassword1" placeholder="Nueva contraseña">
+                            <input maxlength="20" required name="newPassword1" type="text" class="form-control" id="newPassword1" placeholder="Nueva contraseña">
                         </div>
                         <div class="form-group">
                             <label for="newPassword2">Repite la nueva contraseña</label>
-                            <input required name="newPassword2" type="text" class="form-control" id="newPassword2" placeholder="Nombre del objeto">
+                            <input maxlength="20" required name="newPassword2" type="text" class="form-control" id="newPassword2" placeholder="Nombre del objeto">
                         </div>
                         <button class="btn btn-primary" type="submit" value="MODIFICAR CONTRASENYA" name="MODIFICAR CONTRASENYA">MODIFICAR CONTRASEÑA</button>
                     </form>
